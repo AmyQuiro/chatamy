@@ -379,7 +379,7 @@ async function handleDialogFlowAction(
       
                     
         let clientCar= await Carrito.findOne({"cliente":ObjectID(myCliente._id)});
-        console.log('clientCarrito :>> ', clientCarrito); 
+        console.log('clientCarrito :>> ', clientCar); 
          
         
         let CompraG = new Compra({
