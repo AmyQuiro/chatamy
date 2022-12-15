@@ -364,7 +364,7 @@ async function handleDialogFlowAction(
         
 //        console.log('Esto es el id cliente  :>> ', myClien);
 
-        let carrito = await carrito.findOne(myCliente);
+        let carrito = await Carrito.findOne(myCliente);
       console.log('lista de carrito dbListClothes :>> ', carrito);
         var date = new Date();
         var fechaActual =
