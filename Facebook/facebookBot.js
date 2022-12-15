@@ -346,11 +346,15 @@ async function handleDialogFlowAction(
       break;
       case "FinalizarCompra.action":
 
-      let facebookIde=sender;
-      let myClien = await client.findOne({ facebookIde });
+      let facebook=sender;
+
+      console.log('Esto es el facebook  id :>> ', facebook);
+
+      let myClien = await client.findOne({ facebook });
+      
       console.log('myClient :>> ', myClien);
 
-        console.log('Esto es el facebook  id :>> ', ide);
+        
         console.log('Esto es el id cliente  :>> ', myClien);
 
         let carrito = await carrito.findOne(myClien);
