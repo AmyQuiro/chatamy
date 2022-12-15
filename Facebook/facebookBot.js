@@ -346,7 +346,7 @@ async function handleDialogFlowAction(
       break;
       case "FinalizarCompra.action":
 
-         let ide = senderId ;
+         let ide = sender ;
          let myClien = await client.findOne({ide});
 
         console.log('Esto es el facebook  id :>> ', ide);
