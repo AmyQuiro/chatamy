@@ -348,13 +348,19 @@ async function handleDialogFlowAction(
 
       var ObjectID = require('mongodb').ObjectID; 
 
+
+      let facebookI=sender;
+      let mClient = await client.findOne({ facebookI });
+      console.log('myClient :>> ', mClient);
+
+
       let facebook=sender;
 
       console.log('Esto es el facebook  id :>>',facebook);
 
       let myClien = await client.findOne({ facebook });
 
-      console.log('myClient :>> ', myClien);
+      console.log('myClient :>>', myClien);
 
         
         console.log('Esto es el id cliente  :>> ', myClien);
