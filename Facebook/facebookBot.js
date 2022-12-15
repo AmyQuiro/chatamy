@@ -311,8 +311,6 @@ async function handleDialogFlowAction(
             clientCarrito=carritoDB;
           });
         }
-
-
         if(!clientCarrito){
           console.info("No existe el carrito para añadir los detalles.");
           return;
@@ -348,7 +346,11 @@ async function handleDialogFlowAction(
       break;
       case "FinalizarCompra.action":
 
-        console.log('entro a finalizar action :>> ', sender);
+         let ide = senderId ;
+
+
+
+        console.log('entro a finalizar action :>> ', ide);
         var date = new Date();
         var fechaActual =
           ("00" + (date.getMonth() + 1)).slice(-2) + "/" +
@@ -365,8 +367,7 @@ async function handleDialogFlowAction(
         console.log('myClient :>> ', cli);
 
   //      let clientCarrito= await Carrito.findOne({"cliente":ObjectID(myClient._id)});
-        console.log('clientCarrito :>> ', clientCarrito);
-        
+        console.log('clientCarrito :>> ', clientCarrito);      
  
        
         if(!clientCarrito){

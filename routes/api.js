@@ -5,7 +5,8 @@ const Product = require('../Models/Products');
 const { post } = require("request");
 const Client = require("../Models/client");
 const Carrito = require("../Models/Carrito");
-const CarritoDetalle = require( "../Models/CarritosDetalle")
+const CarritoDetalle = require( "../Models/CarritosDetalle");
+const CompraDetalle = require("../Models/CompraDetalle");
 
 router.get("/chatbot", async  (req, res) => {
   
@@ -102,20 +103,38 @@ router.get("/chatbot", async  (req, res) => {
 
   router.post("/compraDetalle", (req,res)=>{
     let body = req.body;
-    let carrito = new CompreDetalle({
+    let compra = new CompraDetalle({
 
-      
       price: body.price,
       quantity: body.quantity,
       product: body.product,
-      carrito: body.carrito
+      compra: body.compra
     });
-    carrito.save((err,compraDetalleDB)=>{
+    compra.save((err,compraDetalleDB)=>{
       if (err) return res.json({ ok: false, msg: "Hubo un error" });
       res.json({
         ok: true,
-        msg: "compraDetalle creado correctamente",
-        carrito: compraDetalleDB,
+        msg: "carritoDetalle creado correctamente",
+        compra: compraDetalleDB,
+      });
+
+    })
+  })
+
+  router.post("/Compra", (req,res)=>{
+    let body = req.body;
+    let compra = new Compra({
+      date: body.date,
+      total: body.total,
+      carrito: body.carrito,
+      cliente: body.cliente
+    });
+    compra.save((err,compraDB)=>{
+      if (err) return res.json({ ok: false, msg: "Hubo un error" });
+      res.json({
+        ok: true,
+        msg: "Compra creado correctamente",
+        Compra: compraDB,
       });
 
     })
