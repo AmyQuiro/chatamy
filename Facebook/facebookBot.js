@@ -347,10 +347,13 @@ async function handleDialogFlowAction(
       case "FinalizarCompra.action":
 
          let ide = senderId ;
+         let myClien = await client.findOne({ide});
 
+        console.log('Esto es el facebook  id :>> ', ide);
+        console.log('Esto es el id cliente  :>> ', myClien);
 
-
-        console.log('entro a finalizar action :>> ', ide);
+        let carrito = await carrito.findOne(myClien);
+      console.log('lista de carrito dbListClothes :>> ', carrito);
         var date = new Date();
         var fechaActual =
           ("00" + (date.getMonth() + 1)).slice(-2) + "/" +
@@ -359,47 +362,47 @@ async function handleDialogFlowAction(
           ("00" + date.getHours()).slice(-2) + ":" +
           ("00" + date.getMinutes()).slice(-2) + ":" +
           ("00" + date.getSeconds()).slice(-2);
+
+          var sum="";
       
         
         var ObjectID = require('mongodb').ObjectID;   
-        let faceid =sender;
-        let cli = await client.findOne({ faceid });
-        console.log('myClient :>> ', cli);
-
-  //      let clientCarrito= await Carrito.findOne({"cliente":ObjectID(myClient._id)});
-        console.log('clientCarrito :>> ', clientCarrito);      
- 
-       
-        if(!clientCarrito){
-          let carritoAGuardar = new Carrito({
-            date: fechaActual ,
-            status:1,
-            total: myProduct.price,
-            cliente: myClient._id
-          });
-
-          await carritoAGuardar.save((err,carritoDB)=>{
+        
+        let clientCar= await Carrito.findOne({"cliente":ObjectID(myClien._id)});
+        console.log('clientCarrito :>> ', clientCarrito); 
+        
+        let CompraG = new Compra({
+          date: fechaActual ,
+          total:clientCar.total,// suma de detalle carrito campo precio
+          idCarrito: clientCar.idCarrito,
+          cliente: myClient._id,
+        })
+        
+          await CompraG.save((err,compraDB)=>{
             if (err) 
             {
               console.log('err :>> ', err);
               return console.info("hubo un error ");
             }
-            console.log('carritoDB :>> ', carritoDB);
-            clientCarrito=carritoDB;
+            console.log('compraDB :>> ', compraDB);
+            clientCar=compraDB;
           });
-        }
+        
 
           // pasar de detalle carrito a detalle compra_uhmmmm
 
 
         break;
+      
 
 
 
     default:
+
       console.info("entro a default action");
       //unhandled action, just send back the text
       handleMessages(messages, sender);
+      
   }
 }
 
