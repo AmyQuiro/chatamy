@@ -406,11 +406,11 @@ async function handleDialogFlowAction(
 
           await sendTextMessage(sender, "Te muestro tus compras");
 
-          let listDetalleCarritoDispla = await getComprasToDisplay(clientCar,sender);
+          var listDetalleCompra = await getComprasToDisplay(clientCar,sender);
          
-          console.log('listDetalleCarritoDisplay :>> ', listDetalleCarritoDispla);
+          console.log('listDetalleCompra :>> ', listDetalleCompra);
 
-          sendGenericMessage(sender,listDetalleCarritoDispla);
+          sendGenericMessage(sender,listDetalleCompra);
 
 
 
