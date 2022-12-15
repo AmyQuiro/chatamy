@@ -25,4 +25,5 @@ const CompraSchema = new Schema(
     { timestamps: true }
   );
   
-  
+  module.exports = mongoose.model("Compra", CompraSchema);
+ 
