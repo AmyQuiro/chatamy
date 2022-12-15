@@ -364,8 +364,8 @@ async function handleDialogFlowAction(
         
 //        console.log('Esto es el id cliente  :>> ', myClien);
 
-        let carrito = await Carrito.findOne(myCliente);
-      console.log('lista de carrito dbListClothes :>> ', carrito);
+       // let carrito = await Carrito.findOne(myCliente);
+  //    console.log('lista de carrito dbListClothes :>> ', carrito);
         var date = new Date();
         var fechaActual =
           ("00" + (date.getMonth() + 1)).slice(-2) + "/" +
@@ -378,7 +378,7 @@ async function handleDialogFlowAction(
           var sum="";
       
                     
-        let clientCar= await Carrito.findOne({"cliente":ObjectID(myCliente._id)});
+       var clientCar= await Carrito.findOne({"cliente":ObjectID(myCliente._id)});
         console.log('clientCarrito :>> ', clientCar); 
          
         
