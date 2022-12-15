@@ -405,15 +405,15 @@ async function handleDialogFlowAction(
           // pasar de detalle carrito a detalle compra_uhmmmm
 
           await sendTextMessage(sender, "Te muestro tus compras");
+          
 
-          var listDetalleCompra = await getComprasToDisplay(clientCar,sender);
+          var list = await getDetalleCarritoToDisplay(clientCar,sender);
          
-          console.log('listDetalleCompra :>> ', listDetalleCompra);
+          console.log('listDetalleCarritoDisplay :>> ', list);
 
-          sendGenericMessage(sender,listDetalleCompra);
-
-
-
+          sendGenericMessage(sender,list);
+        
+          
         break;
       
 
@@ -478,36 +478,6 @@ async function getDetalleCarritoToDisplay(clientCarrito,sender){
   console.log('detnro de metodo listDetalleCarritoDisplay :>> ', listDetalleCarritoDisplay);
   return listDetalleCarritoDisplay;
 }
-
-async function getComprasToDisplay(clientCarrito,sender){
-
-  var ObjectID = require('mongodb').ObjectID;   
-  console.info("inicio de detalle en carrito");
-  let dblistDetalleCarrito =  await CarritoDetalle.find({"carrito": new ObjectID(clientCarrito._id)});
-  console.log("inicio de detalle", dblistDetalleCarrito);
-
-  let listDetalleCarritoDisplay=[];
-  await Promise.all(dblistDetalleCarrito.map(async (myDetalle) => {
-        
-    let clothesInfo =  await Product.findOne({"_id": new ObjectID(myDetalle.product)});
-
-    console.log('clothesInfo :>> ', clothesInfo);
-
-    let info = {
-      title: clothesInfo.name + " $" + clothesInfo.price,
-      image_url: clothesInfo.img,
-      subtitle: clothesInfo.description,
-
-      }
-    console.log('info :>> ', info);
-    listDetalleCarritoDisplay.push(info);
-  }));
-
-  console.log('detnro de metodo listDetalleCarritoDisplay :>> ', listDetalleCarritoDisplay);
-  return listDetalleCarritoDisplay;
-}
-
-
 
 
 async function handleMessage(message, sender) {
