@@ -346,12 +346,14 @@ async function handleDialogFlowAction(
       break;
       case "FinalizarCompra.action":
 
+      var ObjectID = require('mongodb').ObjectID; 
+
       let facebook=sender;
 
-      console.log('Esto es el facebook  id :>> ', facebook);
+      console.log('Esto es el facebook  id :>>',facebook);
 
       let myClien = await client.findOne({ facebook });
-      
+
       console.log('myClient :>> ', myClien);
 
         
@@ -371,7 +373,7 @@ async function handleDialogFlowAction(
           var sum="";
       
         
-        var ObjectID = require('mongodb').ObjectID;   
+       
         
         let clientCar= await Carrito.findOne({"cliente":ObjectID(myClien._id)});
         console.log('clientCarrito :>> ', clientCarrito); 
