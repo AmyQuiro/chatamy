@@ -13,6 +13,7 @@ const client = require('../Models/client');
 const Product = require("../Models/Products");
 const Carrito= require("../Models/Carrito");
 const CarritoDetalle= require("../Models/CarritosDetalle");
+const Compra=require("../Models/Compra");
 
 
 
@@ -349,23 +350,21 @@ async function handleDialogFlowAction(
       var ObjectID = require('mongodb').ObjectID; 
 
 
-      let facebookI=sender;
-      let mClient = await client.findOne({ facebookI });
-      console.log('myClient :>> ', mClient);
+      facebookId=sender;
+      myClient = await client.findOne({ facebookId });
+      console.log('myClient :>> ', myClient);
 
+     // let facebook=sender;
 
-      let facebook=sender;
+      //console.log('Esto es el facebook  id :>>',facebook);
 
-      console.log('Esto es el facebook  id :>>',facebook);
+      //let myClien = await client.findOne({ facebook });
 
-      let myClien = await client.findOne({ facebook });
-
-      console.log('myClient :>>', myClien);
 
         
-        console.log('Esto es el id cliente  :>> ', myClien);
+//        console.log('Esto es el id cliente  :>> ', myClien);
 
-        let carrito = await carrito.findOne(myClien);
+        let carrito = await carrito.findOne(myClient);
       console.log('lista de carrito dbListClothes :>> ', carrito);
         var date = new Date();
         var fechaActual =
@@ -379,7 +378,7 @@ async function handleDialogFlowAction(
           var sum="";
       
                     
-        let clientCar= await Carrito.findOne({"cliente":ObjectID(myClien._id)});
+        let clientCar= await Carrito.findOne({"cliente":ObjectID(myClient._id)});
         console.log('clientCarrito :>> ', clientCarrito); 
          
         
