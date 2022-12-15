@@ -347,7 +347,10 @@ async function handleDialogFlowAction(
       case "FinalizarCompra.action":
 
          let ide = sender ;
-         let myClien = await client.findOne({ide});
+         let myClien = await client.findOne({ ide });
+
+        //  let myClient = await client.findOne({ facebookId });
+        // console.log('myClient :>> ', myClient);
 
         console.log('Esto es el facebook  id :>> ', ide);
         console.log('Esto es el id cliente  :>> ', myClien);
@@ -370,6 +373,7 @@ async function handleDialogFlowAction(
         
         let clientCar= await Carrito.findOne({"cliente":ObjectID(myClien._id)});
         console.log('clientCarrito :>> ', clientCarrito); 
+         
         
         let CompraG = new Compra({
           date: fechaActual ,
@@ -377,6 +381,8 @@ async function handleDialogFlowAction(
           idCarrito: clientCar.idCarrito,
           cliente: myClient._id,
         })
+
+        console.log('clientCarrito :>> guardo'); 
         
           await CompraG.save((err,compraDB)=>{
             if (err) 
