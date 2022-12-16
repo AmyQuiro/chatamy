@@ -404,16 +404,9 @@ async function handleDialogFlowAction(
 
           // pasar de detalle carrito a detalle compra_uhmmmm
 
-          await sendTextMessage(sender, "Te muestro tus compras");
+          await sendTextMessage(sender, "Compra finalizada con exito");
           
-
-          var list = await getDetalleCarritoToDisplay(clientCar,sender);
          
-          console.log('listDetalleCarritoDisplay :>> ', list);
-
-          sendGenericMessage(sender,list);
-        
-          
         break;
       
 
