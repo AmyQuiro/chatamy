@@ -17,7 +17,7 @@ const ClientSchema = new Schema(
         ref : "Carritos"
       },
       status:Number,//1:prospecto - 2:Contacto - 3:Cliente - 4:Cliente recurrente 
-      email:String,
+      email: String,
     },
     { timestamps: true }
   );
