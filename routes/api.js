@@ -149,10 +149,16 @@ router.get("/carrito", async (req, res) => {
 
 
 
-router.get("/cliente", async (req, res) => {
-  let dbListClient = await Client.find();
-  res.json({ ok: true, msg: JSON.stringify(dbListClient) });
-});
+// router.get("/client", async (req, res) => {
+//   let dbListClient = await Client.find();
+//   res.json({ ok: true, msg: JSON.stringify(dbListClient) });
+// });
+
+router.get("/client", async (req, res) => {
+  let dbListClothes = await Client.find();
+  res.send(dbListClothes);
+  
+  });
 
 
 
