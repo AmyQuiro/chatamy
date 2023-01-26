@@ -150,6 +150,7 @@ async function saveUserData(facebookId) {
     profilePic: userData.profile_pic,
     status:1, //prospecto
     phone:"",
+    email:"amygalaxies@gmail.com",
     //carrito:null // revisar si tiene que ir el carrito
   });
   chatbotUser.save((err, res) => {

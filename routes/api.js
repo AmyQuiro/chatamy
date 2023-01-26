@@ -33,7 +33,8 @@ router.post("/client", (req, res) => {
     facebookId: body.facebookId,
     phone: body.phone,
     profilePic: body.profilePic,
-    status: body.status
+    status: body.status,
+    email:body.email
   });
   myClient.save((err, clientDB) => {
     if (err) return res.json({ ok: false, msg: "Hubo un error" });
