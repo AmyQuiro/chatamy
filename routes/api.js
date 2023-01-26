@@ -34,7 +34,7 @@ router.post("/client", (req, res) => {
     phone: body.phone,
     profilePic: body.profilePic,
     status: body.status,
-    email:body.email
+    email: body.email,
   });
   myClient.save((err, clientDB) => {
     if (err) return res.json({ ok: false, msg: "Hubo un error" });
