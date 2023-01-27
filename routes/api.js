@@ -163,7 +163,7 @@ router.get("/client", async (req, res) => {
 });
 
 
-router.post("/changestatusclient", async (req, res) => {
+router.post("/updateClientStatus", async (req, res) => {
   // create a filter for a movie to update
 
   let body = req.body;
