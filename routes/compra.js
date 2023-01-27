@@ -29,9 +29,9 @@ router.get("/", async (req, res) => {
             let detalleToSend = {
                 "_id": detalle._id,
                 "price": detalle.price,
-                "quantity": 1,
-                "product": myProduct?.name,
-                "product_id": myProduct?._id,
+                "quantity": detalle.quantity ?? 1,
+                "product": myProduct.name,
+                "product_id": myProduct._id,
             }
 
             listDetalle.push(detalleToSend);
