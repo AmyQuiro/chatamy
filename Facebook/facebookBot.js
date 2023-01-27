@@ -438,10 +438,15 @@ async function handleDialogFlowAction(
       console.log('facebookId :>> ', facebookId);
 
 
-      const filter = { 'cliente': new ObjectId(facebookId) }
-      console.info("filter ");
-      let dbListCompras = await Compra.find(filter);
-      console.log('dbListCompras total cliente :>> ', dbListCompras.length);
+      // const filter = { 'cliente': new ObjectId(facebookId) }
+      // console.info("filter ");
+      // let dbListCompras = await Compra.find(filter);
+      // console.log('dbListCompras total cliente :>> ', dbListCompras.length);
+
+
+
+      var dbListCompras = await Compra.find({ "cliente": ObjectID(myCliente._id) });
+      console.log('clientCarrito :>> ', clientCar);
 
 
       // Obtenemos el cliente y actualizamos su status 
