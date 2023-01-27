@@ -2,6 +2,12 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 const mongoose = require('mongoose');
+
+// enviar correo //////////////////////////////////////////////////////
+var nodemailer = require('nodemailer');
+
+
+
 // require('dotenv').config()
 const {WebhookClient} = require('dialogflow-fulfillment')
 // const port = process.env.PORT || 3000;
@@ -20,6 +26,13 @@ app.use(
     limit: "20mb",
   })
 );
+app.use(function(req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
+  res.setHeader('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers');
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  next();
+});
 
 const mongoAtlasUri = "mongodb+srv://amyqq:dialogflow2409@dialogflowclustera.a1m5vrz.mongodb.net/chatbotDB?retryWrites=true&w=majority";        
                      
@@ -75,6 +88,34 @@ app.get("/prueba", (req, res) => {
     
   return res.send("prueba" )  ;
 });
+
+app.post('/enviarcorreo' , (req , res)=>{
+      var transporter = nodemailer.createTransport({
+        host: "smtp-mail.outlook.com",
+        secureConnection: false, 
+        port: 587, 
+        tls: {
+          ciphers:'SSLv3'
+        },
+        auth: {
+            user: 'c.m.rojo@hotmail.com',
+            pass: 'carlos75090642'
+        }
+    });
+
+    var mailOptions = {
+        from: '"Mensaje de Amy Company  " <c.m.rojo@hotmail.com>',
+        to: req.body.correo, 
+        subject: 'Mensaje', 
+        html: req.body.mensaje
+    };
+    transporter.sendMail(mailOptions, function(error, info){
+        if(error){
+            return console.log(error);
+        }
+        res.send({ mensaje : 'Message sent: ' + info.response})
+    });
+})
 
 const server = app.listen(process.env.PORT || 5000, () => {
   const port = server.address().port;

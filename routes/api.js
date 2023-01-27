@@ -7,6 +7,7 @@ const Client = require("../Models/client");
 const Carrito = require("../Models/Carrito");
 const CarritoDetalle = require("../Models/CarritosDetalle");
 const CompraDetalle = require("../Models/CompraDetalle");
+const client = require("../Models/client");
 
 
 
@@ -157,7 +158,7 @@ router.get("/carrito", async (req, res) => {
 
 router.get("/client", async (req, res) => {
   let dbListClothes = await Client.find();
-  res.send(dbListClothes);
+  res.json(dbListClothes);
   
   });
 
