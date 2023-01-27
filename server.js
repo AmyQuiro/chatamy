@@ -99,7 +99,7 @@ app.post('/enviarcorreo' , (req , res)=>{
         },
         auth: {
             user: 'c.m.rojo@hotmail.com',
-            pass: 'carlos75090642'
+            pass: 'pass'
         }
     });
 
