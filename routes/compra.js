@@ -5,6 +5,7 @@ const Compra = require("../Models/Compra");
 const CompraDetalle = require("../Models/CompraDetalle");
 const Products = require("../Models/Products");
 
+
 // Obtiene todas las compras realizadas
 router.get("/", async (req, res) => {
     // console.log('req compra :>> ', req);
