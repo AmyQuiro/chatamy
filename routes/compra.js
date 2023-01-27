@@ -29,7 +29,7 @@ router.get("/", async (req, res) => {
             let detalleToSend = {
                 "_id": detalle._id,
                 "price": detalle.price,
-                "quantity": detalle.quantity ?? 1,
+                "quantity": 1,
                 "product": myProduct.name,
                 "product_id": myProduct._id,
             }
