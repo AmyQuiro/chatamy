@@ -450,7 +450,7 @@ async function handleDialogFlowAction(
 
 
       // Obtenemos el cliente y actualizamos su status 
-      let filterClient = { '_id': new ObjectId(facebookId) }
+      let filterClient = { '_id': ObjectId(myCliente._id) }
       console.info("filterClient");
 
       const options = { upsert: false };
