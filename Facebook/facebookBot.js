@@ -435,11 +435,13 @@ async function handleDialogFlowAction(
 
 
       console.info("inicio de cambio de estado de usuario");
+      console.log('facebookId :>> ', facebookId);
+      console.log('sender :>> ', sender);
       let mongoose = require('mongoose');
       const filter = { 'cliente': mongoose.Types.ObjectId(facebookId) }
 
       let dbListCompras = await Compra.find(filter);
-      console.log('dbListCompras :>> ', dbListCompras.length);
+      console.log('dbListCompras total cliente :>> ', dbListCompras.length);
 
 
       // Obtenemos el cliente y actualizamos su status 
