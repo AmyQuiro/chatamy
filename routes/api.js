@@ -6,13 +6,11 @@ const { post } = require("request");
 
 const Carrito = require("../Models/Carrito");
 const CarritoDetalle = require("../Models/CarritosDetalle");
-const CompraDetalle = require("../Models/CompraDetalle");
+// const CompraDetalle = require("../Models/CompraDetalle");
 
 // ROUTES
-clientRoute = require('./client');
-
-
 router.use('/client', require('./client'));
+router.use('/compra', require('./compra'));
 
 
 
@@ -92,44 +90,6 @@ router.post("/carrito", (req, res) => {
   })
 })
 
-router.post("/compraDetalle", (req, res) => {
-  let body = req.body;
-  let compra = new CompraDetalle({
-
-    price: body.price,
-    quantity: body.quantity,
-    product: body.product,
-    compra: body.compra
-  });
-  compra.save((err, compraDetalleDB) => {
-    if (err) return res.json({ ok: false, msg: "Hubo un error" });
-    res.json({
-      ok: true,
-      msg: "carritoDetalle creado correctamente",
-      compra: compraDetalleDB,
-    });
-
-  })
-})
-
-router.post("/Compra", (req, res) => {
-  let body = req.body;
-  let compra = new Compra({
-    date: body.date,
-    total: body.total,
-    carrito: body.carrito,
-    cliente: body.cliente
-  });
-  compra.save((err, compraDB) => {
-    if (err) return res.json({ ok: false, msg: "Hubo un error" });
-    res.json({
-      ok: true,
-      msg: "Compra creado correctamente",
-      Compra: compraDB,
-    });
-
-  })
-});
 
 router.get("/carrito", async (req, res) => {
   let dbListCarrito = await Carrito.find();
