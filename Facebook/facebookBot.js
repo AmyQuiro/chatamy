@@ -433,6 +433,32 @@ async function handleDialogFlowAction(
       }));
 
 
+
+      console.info("inicio de cambio de estado de usuario");
+      let mongoose = require('mongoose');
+      const filter = { 'cliente': mongoose.Types.ObjectId(facebookId) }
+
+      let dbListCompras = await Compra.find(filter);
+      console.log('dbListCompras :>> ', dbListCompras.length);
+
+
+      // Obtenemos el cliente y actualizamos su status 
+      let filterClient = { '_id': mongoose.Types.ObjectId(facebookId) }
+      const options = { upsert: false };
+      let newStatus = 1;
+      if (dbListCompras.length >= 3) {
+        newStatus = 3;
+      }
+      const updateDoc = {
+        $set: {
+          status: newStatus
+        },
+      };
+      const result = await Client.updateOne(filterClient, updateDoc, options);
+      console.info("terminado de cambio de estado de usuario");
+
+
+
       await sendTextMessage(sender, "Compra finalizada con exito");
 
 
