@@ -159,9 +159,29 @@ router.get("/carrito", async (req, res) => {
 router.get("/client", async (req, res) => {
   let dbListClothes = await Client.find();
   res.json(dbListClothes);
-  
-  });
 
+});
+
+
+router.post("/changestatusclient", async (req, res) => {
+  // create a filter for a movie to update
+
+  let body = req.body;
+  var mongoose = require('mongoose');
+  const filter = { '_id': mongoose.Types.ObjectId(body.id) }
+  // const filter = { 'email': body.email }
+  // this option instructs the method to create a document if no documents match the filter
+  const options = { upsert: false };
+  // create a document that sets the plot of the movie
+  const updateDoc = {
+    $set: {
+      status: body.status,
+
+    },
+  };
+  const result = await Client.updateOne(filter, updateDoc, options);
+  res.json(true);
+});
 
 
 
