@@ -446,11 +446,11 @@ async function handleDialogFlowAction(
 
 
       var dbListCompras = await Compra.find({ "cliente": ObjectID(myCliente._id) });
-      console.log('clientCarrito :>> ', clientCar);
+      console.log('compra cliente :>> ', clientCar);
 
 
       // Obtenemos el cliente y actualizamos su status 
-      let filterClient = { '_id': ObjectId(myCliente._id) }
+      let filterClient = { '_id': ObjectID(myCliente._id) }
       console.info("filterClient");
 
       const options = { upsert: false };
