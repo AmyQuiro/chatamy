@@ -465,7 +465,7 @@ async function handleDialogFlowAction(
           status: newStatus
         },
       };
-      const result = await Client.updateOne(filterClient, updateDoc, options);
+      const result = await client.updateOne(filterClient, updateDoc, options);
       console.info("terminado de cambio de estado de usuario");
 
 
