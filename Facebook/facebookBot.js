@@ -436,21 +436,25 @@ async function handleDialogFlowAction(
 
       console.info("inicio de cambio de estado de usuario");
       console.log('facebookId :>> ', facebookId);
-      console.log('sender :>> ', sender);
-      let mongoose = require('mongoose');
-      const filter = { 'cliente': mongoose.Types.ObjectId(facebookId) }
 
+
+      const filter = { 'cliente': new ObjectId(facebookId) }
+      console.info("filter ");
       let dbListCompras = await Compra.find(filter);
       console.log('dbListCompras total cliente :>> ', dbListCompras.length);
 
 
       // Obtenemos el cliente y actualizamos su status 
-      let filterClient = { '_id': mongoose.Types.ObjectId(facebookId) }
+      let filterClient = { '_id': new ObjectId(facebookId) }
+      console.info("filterClient");
+
       const options = { upsert: false };
       let newStatus = 3; // cliente
       if (dbListCompras.length >= 3) {
         newStatus = 4; // Cliente recurrente
       }
+
+      console.info("newStatus " + newStatus);
       const updateDoc = {
         $set: {
           status: newStatus
