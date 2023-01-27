@@ -430,9 +430,6 @@ async function handleDialogFlowAction(
           console.log('compraDetalleDB :>> ', compraDetalleDB);
 
         });
-
-        console.log('info :>> ', info);
-        listDetalleCarritoDisplay.push(info);
       }));
 
 
