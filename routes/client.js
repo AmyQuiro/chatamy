@@ -3,6 +3,13 @@ const router = express.Router();
 
 const Client = require("../Models/client");
 
+
+router.get("", async (req, res) => {
+    let dbListClothes = await Client.find();
+    res.json(dbListClothes);
+
+});
+
 router.post("/client", (req, res) => {
     let body = req.body;
     let myClient = new Client({
@@ -26,11 +33,7 @@ router.post("/client", (req, res) => {
 
 
 
-router.get("/client", async (req, res) => {
-    let dbListClothes = await Client.find();
-    res.json(dbListClothes);
 
-});
 
 
 router.post("/updateClientStatus", async (req, res) => {
