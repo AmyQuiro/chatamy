@@ -11,9 +11,10 @@ const { structProtoToJson } = require("./helpers/structFunctions");
 /// mongo db models
 const client = require('../Models/client');
 const Product = require("../Models/Products");
-const Carrito= require("../Models/Carrito");
-const CarritoDetalle= require("../Models/CarritosDetalle");
-const Compra=require("../Models/Compra");
+const Carrito = require("../Models/Carrito");
+const CarritoDetalle = require("../Models/CarritosDetalle");
+const Compra = require("../Models/Compra");
+const CompraDetalle = require("../Models/CompraDetalle");
 
 
 
@@ -148,9 +149,9 @@ async function saveUserData(facebookId) {
     lastName: userData.last_name,
     facebookId,
     profilePic: userData.profile_pic,
-    status:1, //prospecto
-    phone:"",
-    email:"amygalaxies@gmail.com",
+    status: 1, //prospecto
+    phone: "",
+    email: "amygalaxies@gmail.com",
     //carrito:null // revisar si tiene que ir el carrito
   });
   chatbotUser.save((err, res) => {
@@ -198,17 +199,17 @@ async function handleDialogFlowAction(
 
   switch (action) {
     case "Prendas.info.action":
-     
+
       let clothes = parameters.fields.clothes.stringValue;
       console.log('clothes :>> ', clothes);
-        
 
-      var selector = {"name": {$regex: clothes, $options:"i"}};
+
+      var selector = { "name": { $regex: clothes, $options: "i" } };
       let dbListClothes = await Product.find(selector);
       console.log('dbListClothes :>> ', dbListClothes);
 
-      
-   
+
+
 
       let listClothesToDisplay = [];
       dbListClothes.forEach(clothesInfo => {
@@ -220,8 +221,8 @@ async function handleDialogFlowAction(
           "buttons": [
             {
               type: "postback",
-              title: "Añadir a Carrito "+clothesInfo.name,
-              payload: "anadir_carrito_"+clothesInfo.id,
+              title: "Añadir a Carrito " + clothesInfo.name,
+              payload: "anadir_carrito_" + clothesInfo.id,
             }, {
               type: "postback",
               title: "Ver mas Prendas",
@@ -258,158 +259,188 @@ async function handleDialogFlowAction(
           }
         ]
       }])
-    
+
       break;
-      case "anadir_a_carrito.action":
+    case "anadir_a_carrito.action":
 
-        let id="";
-        if(queryText.includes("anadir_carrito")){
-          id=queryText.replace("anadir_carrito_","");
+      let id = "";
+      if (queryText.includes("anadir_carrito")) {
+        id = queryText.replace("anadir_carrito_", "");
+      }
+      console.log('id del producto :>> ', id);
+      // AQUI SE TIENE QUE ADICIONAR EL AÑADIR A CARRITO
+
+      var date = new Date();
+      var fechaActual =
+        ("00" + (date.getMonth() + 1)).slice(-2) + "/" +
+        ("00" + date.getDate()).slice(-2) + "/" +
+        date.getFullYear() + " " +
+        ("00" + date.getHours()).slice(-2) + ":" +
+        ("00" + date.getMinutes()).slice(-2) + ":" +
+        ("00" + date.getSeconds()).slice(-2);
+
+
+      console.log('sender :>> ', sender);
+      var ObjectID = require('mongodb').ObjectID;
+
+      let myProduct = await Product.findOne({ "_id": new ObjectID(id) });
+
+      console.log('myProduct :>> ', myProduct);
+
+
+      var facebookId = sender;
+      var myClient = await client.findOne({ facebookId });
+      console.log('myClient :>> ', myClient);
+
+      console.info("====================================================");
+      let clientCarrito = await Carrito.findOne({ "cliente": ObjectID(myClient._id) });
+      console.log('clientCarrito :>> ', clientCarrito);
+
+      if (!clientCarrito) {
+        let carritoAGuardar = new Carrito({
+          date: fechaActual,
+          status: 1,
+          total: myProduct.price,
+          cliente: myClient._id
+        });
+
+        await carritoAGuardar.save((err, carritoDB) => {
+          if (err) {
+            console.log('err :>> ', err);
+            return console.info("hubo un error ");
+          }
+          console.log('carritoDB :>> ', carritoDB);
+          clientCarrito = carritoDB;
+        });
+      }
+      if (!clientCarrito) {
+        console.info("No existe el carrito para añadir los detalles.");
+        return;
+      }
+      let carritoDetalle = new CarritoDetalle({
+        price: myProduct.price,
+        quantity: 1,
+        product: myProduct._id,
+        carrito: clientCarrito._id
+      });
+      await carritoDetalle.save((err, carritoDetalleDB) => {
+        if (err) {
+          console.log('err :>> ', err);
+          return console.info("hubo un error ");
         }
-        console.log('id del producto :>> ', id);
-        // AQUI SE TIENE QUE ADICIONAR EL AÑADIR A CARRITO
-   
-        var date = new Date();
-        var fechaActual =
-          ("00" + (date.getMonth() + 1)).slice(-2) + "/" +
-          ("00" + date.getDate()).slice(-2) + "/" +
-          date.getFullYear() + " " +
-          ("00" + date.getHours()).slice(-2) + ":" +
-          ("00" + date.getMinutes()).slice(-2) + ":" +
-          ("00" + date.getSeconds()).slice(-2);
-      
-        
-        console.log('sender :>> ', sender);
-        var ObjectID = require('mongodb').ObjectID;   
+        console.log('carritoDetalleDB :>> ', carritoDetalleDB);
 
-        let myProduct =  await Product.findOne({"_id": new ObjectID(id)});
-        
-        console.log('myProduct :>> ', myProduct);
+      });
 
-        
-        var facebookId=sender;
-        var myClient = await client.findOne({ facebookId });
-        console.log('myClient :>> ', myClient);
-        
-        console.info("====================================================");
-       let clientCarrito= await Carrito.findOne({"cliente":ObjectID(myClient._id)});
-       console.log('clientCarrito :>> ', clientCarrito);
-       
-        if(!clientCarrito){
-          let carritoAGuardar = new Carrito({
-            date: fechaActual ,
-            status:1,
-            total: myProduct.price,
-            cliente: myClient._id
-          });
+      await sendTextMessage(sender, "Se agregó al carrito : " + myProduct.name);
 
-          await carritoAGuardar.save((err,carritoDB)=>{
-            if (err) 
-            {
-              console.log('err :>> ', err);
-              return console.info("hubo un error ");
-            }
-            console.log('carritoDB :>> ', carritoDB);
-            clientCarrito=carritoDB;
-          });
-        }
-        if(!clientCarrito){
-          console.info("No existe el carrito para añadir los detalles.");
-          return;
-        }
-          let carritoDetalle = new CarritoDetalle({
-            price: myProduct.price,
-            quantity: 1,
-            product: myProduct._id,
-            carrito: clientCarrito._id
-          });
-          await carritoDetalle.save((err,carritoDetalleDB)=>{
-            if (err) 
-            {
-              console.log('err :>> ', err);
-               return console.info("hubo un error ");
-            }
-            console.log('carritoDetalleDB :>> ', carritoDetalleDB);
-      
-          });
-      
-          await sendTextMessage(sender, "Se agregó al carrito : " + myProduct.name);
+      await sendTextMessage(sender, "Te muestro tu carrito ");
 
-          await sendTextMessage(sender, "Te muestro tu carrito ");
+      let listDetalleCarritoDisplay = await getDetalleCarritoToDisplay(clientCarrito, sender);
 
-          let listDetalleCarritoDisplay = await getDetalleCarritoToDisplay(clientCarrito,sender);
-         
-          console.log('listDetalleCarritoDisplay :>> ', listDetalleCarritoDisplay);
+      console.log('listDetalleCarritoDisplay :>> ', listDetalleCarritoDisplay);
 
-          sendGenericMessage(sender,listDetalleCarritoDisplay);
-        
-      
+      sendGenericMessage(sender, listDetalleCarritoDisplay);
+
+
       //  console.log(parameters);
       break;
-      case "FinalizarCompra.action":
+    case "FinalizarCompra.action":
 
-      var ObjectID = require('mongodb').ObjectID; 
+      var ObjectID = require('mongodb').ObjectID;
 
 
-      var facebookId=sender;
+      var facebookId = sender;
       var myCliente = await client.findOne({ facebookId });
       console.log('myClient :>> ', myCliente);
 
-     // let facebook=sender;
+      // let facebook=sender;
 
       //console.log('Esto es el facebook  id :>>',facebook);
 
       //let myClien = await client.findOne({ facebook });
 
 
-        
-//        console.log('Esto es el id cliente  :>> ', myClien);
 
-       // let carrito = await Carrito.findOne(myCliente);
-  //    console.log('lista de carrito dbListClothes :>> ', carrito);
-        var date = new Date();
-        var fechaActual =
-          ("00" + (date.getMonth() + 1)).slice(-2) + "/" +
-          ("00" + date.getDate()).slice(-2) + "/" +
-          date.getFullYear() + " " +
-          ("00" + date.getHours()).slice(-2) + ":" +
-          ("00" + date.getMinutes()).slice(-2) + ":" +
-          ("00" + date.getSeconds()).slice(-2);
+      //        console.log('Esto es el id cliente  :>> ', myClien);
 
-          var sum="";
-      
-                    
-       var clientCar= await Carrito.findOne({"cliente":ObjectID(myCliente._id)});
-        console.log('clientCarrito :>> ', clientCar); 
-         
-        
-        let CompraG = new Compra({
-          date: fechaActual ,
-          total:clientCar.total,// suma de detalle carrito campo precio
-          idCarrito: clientCar.idCarrito,
-          cliente: myCliente._id,
-        })
+      // let carrito = await Carrito.findOne(myCliente);
+      //    console.log('lista de carrito dbListClothes :>> ', carrito);
+      var date = new Date();
+      var fechaActual =
+        ("00" + (date.getMonth() + 1)).slice(-2) + "/" +
+        ("00" + date.getDate()).slice(-2) + "/" +
+        date.getFullYear() + " " +
+        ("00" + date.getHours()).slice(-2) + ":" +
+        ("00" + date.getMinutes()).slice(-2) + ":" +
+        ("00" + date.getSeconds()).slice(-2);
 
-        console.log('clientCarrito :>> guardo'); 
-        
-          await CompraG.save((err,compraDB)=>{
-            if (err) 
-            {
-              console.log('err :>> ', err);
-              return console.info("hubo un error ");
-            }
-            console.log('compraDB :>> ', compraDB);
-            clientCar=compraDB;
-          });
-        
+      var sum = "";
 
-          // pasar de detalle carrito a detalle compra_uhmmmm
 
-          await sendTextMessage(sender, "Compra finalizada con exito");
-          
-         
-        break;
-      
+      var clientCar = await Carrito.findOne({ "cliente": ObjectID(myCliente._id) });
+      console.log('clientCarrito :>> ', clientCar);
+
+
+      let CompraG = new Compra({
+        date: fechaActual,
+        total: clientCar.total,// suma de detalle carrito campo precio
+        idCarrito: clientCar.idCarrito,
+        cliente: myCliente._id,
+      })
+
+      console.log('clientCarrito :>> guardo');
+
+      await CompraG.save((err, compraDB) => {
+        if (err) {
+          console.log('err :>> ', err);
+          return console.info("hubo un error al procesar la compra");
+        }
+        console.log('compraDB :>> ', compraDB);
+        // clientCar = compraDB;
+      });
+
+
+      // pasar de detalle carrito a detalle compra_uhmmmm
+
+      let dblistDetalleCarrito = await CarritoDetalle.find({ "carrito": new ObjectID(clientCar._id) });
+      console.log("inicio de detalle", dblistDetalleCarrito);
+
+
+
+      await Promise.all(dblistDetalleCarrito.map(async (myDetalle) => {
+
+        let myProduct = await Product.findOne({ "_id": new ObjectID(myDetalle.product) });
+
+        console.log('mi producto de carrito  :>> ', myProduct);
+
+        let myCompraDetalle = new CompraDetalle({
+          price: myProduct.price,
+          quantity: myProduct.quantity,
+          product: myProduct._id,
+          Compra: CompraG._id
+        });
+
+
+        await myCompraDetalle.save((err, compraDetalleDB) => {
+          if (err) {
+            console.log('err :>> ', err);
+            return console.info("hubo un error al procesar la compra");
+          }
+          console.log('compraDetalleDB :>> ', compraDetalleDB);
+
+        });
+
+        console.log('info :>> ', info);
+        listDetalleCarritoDisplay.push(info);
+      }));
+
+
+      await sendTextMessage(sender, "Compra finalizada con exito");
+
+
+      break;
+
 
 
 
@@ -418,12 +449,12 @@ async function handleDialogFlowAction(
       console.info("entro a default action");
       //unhandled action, just send back the text
       handleMessages(messages, sender);
-      
+
   }
 }
 
 
-async function printFiles () {
+async function printFiles() {
   const files = await getFilePaths();
 
   for (const file of files) {
@@ -433,17 +464,17 @@ async function printFiles () {
 }
 
 
-async function getDetalleCarritoToDisplay(clientCarrito,sender){
+async function getDetalleCarritoToDisplay(clientCarrito, sender) {
 
-  var ObjectID = require('mongodb').ObjectID;   
+  var ObjectID = require('mongodb').ObjectID;
   console.info("inicio de detalle en carrito");
-  let dblistDetalleCarrito =  await CarritoDetalle.find({"carrito": new ObjectID(clientCarrito._id)});
+  let dblistDetalleCarrito = await CarritoDetalle.find({ "carrito": new ObjectID(clientCarrito._id) });
   console.log("inicio de detalle", dblistDetalleCarrito);
 
-  let listDetalleCarritoDisplay=[];
+  let listDetalleCarritoDisplay = [];
   await Promise.all(dblistDetalleCarrito.map(async (myDetalle) => {
-        
-    let clothesInfo =  await Product.findOne({"_id": new ObjectID(myDetalle.product)});
+
+    let clothesInfo = await Product.findOne({ "_id": new ObjectID(myDetalle.product) });
 
     console.log('clothesInfo :>> ', clothesInfo);
 
@@ -456,7 +487,7 @@ async function getDetalleCarritoToDisplay(clientCarrito,sender){
         {
           type: "postback",
           title: "Finalizar compra",
-          payload: "finalizar_compra_"+sender,
+          payload: "finalizar_compra_" + sender,
         }, {
           type: "postback",
           title: "Ver mas Prendas",
@@ -597,15 +628,15 @@ async function sendToDialogFlow(senderId, messageText) {
     let result;
     setSessionAndUser(senderId);
     let session = sessionIds.get(senderId);
-    
+
     result = await dialogflow.sendToDialogFlow(
       messageText,
       session,
       "FACEBOOK"
     );
-    
+
     handleDialogFlowResponse(senderId, result);
-    
+
   } catch (error) {
     console.log("salio mal en sendToDialogflow...", error);
   }
@@ -617,14 +648,14 @@ function handleDialogFlowResponse(sender, response) {
   let action = response.action;
   let contexts = response.outputContexts;
   let parameters = response.parameters;
-  let queryText= response.queryText;
+  let queryText = response.queryText;
 
   console.log('response handleDialogFlowResponse :>> ', response);
 
   sendTypingOff(sender);
 
   if (isDefined(action)) {
-    handleDialogFlowAction(sender, action, messages, contexts, parameters,queryText);
+    handleDialogFlowAction(sender, action, messages, contexts, parameters, queryText);
   } else if (isDefined(messages)) {
     handleMessages(messages, sender);
   } else if (responseText == "" && !isDefined(action)) {

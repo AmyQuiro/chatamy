@@ -3,11 +3,17 @@ const router = express.Router();
 const Product = require('../Models/Products');
 
 const { post } = require("request");
-const Client = require("../Models/client");
+
 const Carrito = require("../Models/Carrito");
 const CarritoDetalle = require("../Models/CarritosDetalle");
 const CompraDetalle = require("../Models/CompraDetalle");
-const client = require("../Models/client");
+
+// ROUTES
+clientRoute = require('./client');
+
+
+router.use('/client', require('./client'));
+
 
 
 
@@ -26,26 +32,7 @@ router.get("/chatbot", async (req, res) => {
 });
 
 
-router.post("/client", (req, res) => {
-  let body = req.body;
-  let myClient = new Client({
-    firstName: body.firstName,
-    lastName: body.lastName,
-    facebookId: body.facebookId,
-    phone: body.phone,
-    profilePic: body.profilePic,
-    status: body.status,
-    email: body.email,
-  });
-  myClient.save((err, clientDB) => {
-    if (err) return res.json({ ok: false, msg: "Hubo un error" });
-    res.json({
-      ok: true,
-      msg: "Client creado correctamente",
-      product: clientDB,
-    });
-  });
-});
+
 
 router.post("/products", (req, res) => {
   let body = req.body;
@@ -149,39 +136,6 @@ router.get("/carrito", async (req, res) => {
   res.json({ ok: true, msg: JSON.stringify(dbListCarrito) });
 });
 
-
-
-// router.get("/client", async (req, res) => {
-//   let dbListClient = await Client.find();
-//   res.json({ ok: true, msg: JSON.stringify(dbListClient) });
-// });
-
-router.get("/client", async (req, res) => {
-  let dbListClothes = await Client.find();
-  res.json(dbListClothes);
-
-});
-
-
-router.post("/updateClientStatus", async (req, res) => {
-  // create a filter for a movie to update
-
-  let body = req.body;
-  var mongoose = require('mongoose');
-  const filter = { '_id': mongoose.Types.ObjectId(body.id) }
-  // const filter = { 'email': body.email }
-  // this option instructs the method to create a document if no documents match the filter
-  const options = { upsert: false };
-  // create a document that sets the plot of the movie
-  const updateDoc = {
-    $set: {
-      status: body.status,
-
-    },
-  };
-  const result = await Client.updateOne(filter, updateDoc, options);
-  res.json(true);
-});
 
 
 
