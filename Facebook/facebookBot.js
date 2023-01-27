@@ -445,9 +445,9 @@ async function handleDialogFlowAction(
       // Obtenemos el cliente y actualizamos su status 
       let filterClient = { '_id': mongoose.Types.ObjectId(facebookId) }
       const options = { upsert: false };
-      let newStatus = 1;
+      let newStatus = 3; // cliente
       if (dbListCompras.length >= 3) {
-        newStatus = 3;
+        newStatus = 4; // Cliente recurrente
       }
       const updateDoc = {
         $set: {
