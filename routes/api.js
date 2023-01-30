@@ -14,6 +14,7 @@ const Promocion = require("../Models/Promocion");
 router.use('/client', require('./client'));
 router.use('/compra', require('./compra'));
 router.use('/promocion', require('./promocion'));
+router.use('/deuda', require('./deudaMesa'));
 
 
 
