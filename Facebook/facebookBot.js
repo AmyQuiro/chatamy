@@ -553,16 +553,16 @@ async function handleDialogFlowAction(
 
       await sendTextMessage(sender, "Le listo su duedas pendientes " + "Deuda: " + 100 + "Bs. Concepto: " + "Compra de vestidos");
 
-      var myCliente = await client.findOne({ facebookId });
-      console.log('myClient :>> ', myCliente);
+      // var myCliente = await client.findOne({ facebookId });
+      // console.log('myClient :>> ', myCliente);
 
-      var deuda = await DeudaMesa.findOne({ "idcliente": ObjectID(myCliente._id) });
-      console.log('deuda :>> ', deuda);
-      if (!deuda) {
-        await sendTextMessage(sender, "No tiene deudas pendintes");
-      }
+      // var deuda = await DeudaMesa.findOne({ "idcliente": ObjectID(myCliente._id) });
+      // console.log('deuda :>> ', deuda);
+      // if (!deuda) {
+      //   await sendTextMessage(sender, "No tiene deudas pendintes");
+      // }
 
-      await sendTextMessage(sender, "Le listo su duedas pendientes " + "Deuda: " + deuda.total + "Bs. Concepto: " + deuda.concepto);
+      // await sendTextMessage(sender, "Le listo su duedas pendientes " + "Deuda: " + deuda.total + "Bs. Concepto: " + deuda.concepto);
 
       break;
 
