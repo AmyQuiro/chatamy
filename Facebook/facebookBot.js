@@ -551,7 +551,7 @@ async function handleDialogFlowAction(
       console.log('parameters', parameters);
       console.log('queryText', queryText);
 
-      // await sendTextMessage(sender, "Le listo su duedas pendientes " + "Deuda: " + deuda.total + "Bs. Concepto: " + deuda.concepto);
+      await sendTextMessage(sender, "Le listo su duedas pendientes " + "Deuda: " + 100 + "Bs. Concepto: " + "Compra de vestidos");
 
       var myCliente = await client.findOne({ facebookId });
       console.log('myClient :>> ', myCliente);
