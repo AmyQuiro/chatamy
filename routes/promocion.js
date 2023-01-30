@@ -45,7 +45,7 @@ router.post("", (req, res) => {
     }
     promocion["listaCorreos"]=listaCorreos;
 
-    res.json({ ok: true, msg: JSON.stringify(miPromocion) });
+    res.json({ miPromocion });
   });
 
 
