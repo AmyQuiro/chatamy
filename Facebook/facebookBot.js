@@ -497,7 +497,10 @@ async function handleDialogFlowAction(
       break;
 
 
-    case "ver.deuda.action":
+      break;
+
+    case "pagardeuda.action":
+
       var ObjectID = require('mongodb').ObjectID;
       var facebookId = sender;
 
@@ -507,6 +510,48 @@ async function handleDialogFlowAction(
       console.log('contexts', contexts);
       console.log('parameters', parameters);
       console.log('queryText', queryText);
+
+      await sendTextMessage(sender, "Le listo su duedas pendientes" + "Deuda: " + deuda.total + "Bs. Concepto: " + deuda.concepto);
+
+      var myCliente = await client.findOne({ facebookId });
+      console.log('myClient :>> ', myCliente);
+
+      var deuda = await DeudaMesa.findOne({ "idcliente": ObjectID(myCliente._id) });
+      console.log('deuda :>> ', deuda);
+      if (!deuda) {
+        await sendTextMessage(sender, "No tiene deudas pendintes");
+      }
+
+      //Inicio del pago 
+      const filter = { '_id': mongoose.Types.ObjectId(deuda._id) }
+
+      const options = { upsert: false };
+
+      const updateDoc = {
+        $set: {
+          status: 2,
+          monto: 0
+        },
+      };
+      const result = await DeudaMesa.updateOne(filter, updateDoc, options);
+
+      await sendTextMessage(sender, "Se poceso el pago de su deuda");
+
+      break;
+
+    // case "ver.deuda.action":
+    case "mostrardeuda.action":
+      var ObjectID = require('mongodb').ObjectID;
+      var facebookId = sender;
+
+      console.log('sender', sender);
+      console.log('action', action);
+      console.log('messages', messages);
+      console.log('contexts', contexts);
+      console.log('parameters', parameters);
+      console.log('queryText', queryText);
+
+      await sendTextMessage(sender, "Le listo su duedas pendientes" + "Deuda: " + deuda.total + "Bs. Concepto: " + deuda.concepto);
 
       var myCliente = await client.findOne({ facebookId });
       console.log('myClient :>> ', myCliente);
@@ -518,18 +563,6 @@ async function handleDialogFlowAction(
       }
 
       await sendTextMessage(sender, "Le listo su duedas pendientes" + "Deuda: " + deuda.total + "Bs. Concepto: " + deuda.concepto);
-
-
-
-
-
-
-
-
-
-
-
-
 
       break;
 
