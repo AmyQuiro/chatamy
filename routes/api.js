@@ -8,9 +8,12 @@ const Carrito = require("../Models/Carrito");
 const CarritoDetalle = require("../Models/CarritosDetalle");
 // const CompraDetalle = require("../Models/CompraDetalle");
 
+const Promocion = require("../Models/Promocion");
+
 // ROUTES
 router.use('/client', require('./client'));
 router.use('/compra', require('./compra'));
+router.use('/promocion', require('./promocion'));
 
 
 
