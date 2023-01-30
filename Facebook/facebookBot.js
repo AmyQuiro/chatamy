@@ -478,7 +478,7 @@ async function handleDialogFlowAction(
     case "MenuPrincipal.action":
       sendGenericMessage(sender, [{
         title: "Menu",
-        image_url: "https://www.esdesignbarcelona.com/sites/default/files/imagenes/haz-crecer-tu-marca-de-ropa-frente-la-competencia_1.jpg",
+        image_url: "https://odg.cat/wp-content/uploads/2021/01/entender-la-deuda-960x615.jpg",
         subtitle: "menu principal",
 
         "buttons": [
