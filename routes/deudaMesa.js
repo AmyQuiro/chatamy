@@ -18,6 +18,7 @@ router.post("", (req, res) => {
         idcliente: body.idcliente,
         status: body.status,
         phone: body.phone,
+        monto: body.monto,
 
     });
     myDeuda.save((err, deudaDB) => {
