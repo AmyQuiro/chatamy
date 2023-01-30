@@ -475,6 +475,27 @@ async function handleDialogFlowAction(
 
 
     //   break;
+    case "MenuPrincipal.action":
+      sendGenericMessage(sender, [{
+        title: "Menu",
+        image_url: "https://www.esdesignbarcelona.com/sites/default/files/imagenes/haz-crecer-tu-marca-de-ropa-frente-la-competencia_1.jpg",
+        subtitle: "menu principal",
+
+        "buttons": [
+          {
+            type: "postback",
+            title: "ver deuda",
+            payload: "verDeuda"
+          }, {
+            type: "postback",
+            title: "paga deuda",
+            payload: "pagarDeuda",
+          }
+        ]
+      }])
+
+      break;
+
 
     case "ver.deuda.action":
       var ObjectID = require('mongodb').ObjectID;
@@ -496,7 +517,18 @@ async function handleDialogFlowAction(
         await sendTextMessage(sender, "No tiene deudas pendintes");
       }
 
-      await sendTextMessage(sender, "Le listo su duedas pendientes");
+      await sendTextMessage(sender, "Le listo su duedas pendientes" + "Deuda: " + deuda.total + "Bs. Concepto: " + deuda.concepto);
+
+
+
+
+
+
+
+
+
+
+
 
 
       break;
