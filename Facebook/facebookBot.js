@@ -274,8 +274,8 @@ async function handleDialogFlowAction(
       console.log('id del producto :>> ', id);
       // AQUI SE TIENE QUE ADICIONAR EL AÑADIR A CARRITO
 
-       date = new Date();
-       fechaActual =
+      var date = new Date();
+      var fechaActual =
         ("00" + (date.getMonth() + 1)).slice(-2) + "/" +
         ("00" + date.getDate()).slice(-2) + "/" +
         date.getFullYear() + " " +
@@ -371,8 +371,8 @@ async function handleDialogFlowAction(
 
       // let carrito = await Carrito.findOne(myCliente);
       //    console.log('lista de carrito dbListClothes :>> ', carrito);
-      let date = new Date();
-      let fechaActual =
+      var date = new Date();
+      var fechaActual =
         ("00" + (date.getMonth() + 1)).slice(-2) + "/" +
         ("00" + date.getDate()).slice(-2) + "/" +
         date.getFullYear() + " " +
