@@ -201,7 +201,6 @@ async function handleDialogFlowAction(
     case "Prendas.info.action":
 
       let clothes = parameters.fields.clothes.stringValue;
-      
       console.log('clothes :>> ', clothes);
 
 
@@ -337,11 +336,11 @@ async function handleDialogFlowAction(
 
       await sendTextMessage(sender, "Te muestro tu carrito ");
 
-      let litaDetalleCarritoAMostrar = await getDetalleCarritoToDisplay(clientCarrito, sender);
+      let listDetalleCarritoDisplay = await getDetalleCarritoToDisplay(clientCarrito, sender);
 
-      console.log('listDetalleCarritoDisplay :>> ',litaDetalleCarritoAMostrar );
+      console.log('listDetalleCarritoDisplay :>> ', listDetalleCarritoDisplay);
 
-      sendGenericMessage(sender, litaDetalleCarritoAMostrar);
+      sendGenericMessage(sender, listDetalleCarritoDisplay);
 
 
       //  console.log(parameters);
@@ -381,15 +380,11 @@ async function handleDialogFlowAction(
 
 
       var clientCar = await Carrito.findOne({ "cliente": ObjectID(myCliente._id) });
-      // clientCar.status = 2;
-
-      let suma = await sumacarritos(clientCar,sender);
-
       console.log('clientCarrito :>> ', clientCar);
 
       let CompraG = new Compra({
         date: fechaActual,
-        total: suma,// suma de detalle carrito campo precio
+        total: clientCar.total,// suma de detalle carrito campo precio
         idCarrito: clientCar.idCarrito,
         cliente: myCliente._id,
       })
@@ -477,31 +472,6 @@ async function handleDialogFlowAction(
 
 
 
-      
-      //INICIO NUEVO CARRITO
-
-      // let nuevoCarrito = new Carrito({
-      //   date: fechaActual,
-      //   status: 1,
-      //   total: 0,
-      //   cliente: myClient._id
-      // });
-
-      // await nuevoCarrito.save((err, carritoDB) => {
-      //   if (err) {
-      //     console.log('err :>> ', err);
-      //     return console.info("hubo un error ");
-      //   }
-      //   console.log('nuevo carrito creado :>> ', carritoDB);
-      //   clientCarrito = carritoDB;
-      // });
-      
-      
-
-      
-      // FIN NUEVO CARRITO
-
-
       await sendTextMessage(sender, "Compra finalizada con exito");
 
 
@@ -529,40 +499,15 @@ async function printFiles() {
   }
 }
 
- async function sumacarritos(clientCarrito, sender){
+
+async function getDetalleCarritoToDisplay(clientCarrito, sender) {
 
   var ObjectID = require('mongodb').ObjectID;
   console.info("inicio de detalle en carrito");
   let dblistDetalleCarrito = await CarritoDetalle.find({ "carrito": new ObjectID(clientCarrito._id) });
   console.log("inicio de detalle", dblistDetalleCarrito);
 
-  var suma = 0;
-
-  
-  await Promise.all(dblistDetalleCarrito.map(async (myDetalle) => {
-
-    let clothesInfo = await Product.findOne({ "_id": new ObjectID(myDetalle.product) });
-
-    suma = suma + clothesInfo.price  ;
-
-
-  }));
-
-  return suma ;
-  
- }
-  
- 
-
-// sender= facebookID
-async function getDetalleCarritoToDisplay(carritoClient, sender) {
-
-  var ObjectID = require('mongodb').ObjectID; //validar si puede estar comentado 
-  console.info("inicio de detalle en carrito");
-  let dblistDetalleCarrito = await CarritoDetalle.find({ "carrito": new ObjectID(carritoClient._id) });
-  console.log("inicio de detalle", dblistDetalleCarrito);
-
-  let listaDetalleCarritoAMostrar = [];
+  let listDetalleCarritoDisplay = [];
   await Promise.all(dblistDetalleCarrito.map(async (myDetalle) => {
 
     let clothesInfo = await Product.findOne({ "_id": new ObjectID(myDetalle.product) });
@@ -588,11 +533,11 @@ async function getDetalleCarritoToDisplay(carritoClient, sender) {
 
     }
     console.log('info :>> ', info);
-    listaDetalleCarritoAMostrar.push(info);
+    listDetalleCarritoDisplay.push(info);
   }));
 
-  console.log('detnro de metodo listDetalleCarritoDisplay :>> ', listaDetalleCarritoAMostrar);
-  return listaDetalleCarritoAMostrar;
+  console.log('detnro de metodo listDetalleCarritoDisplay :>> ', listDetalleCarritoDisplay);
+  return listDetalleCarritoDisplay;
 }
 
 
