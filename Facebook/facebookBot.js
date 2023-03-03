@@ -274,8 +274,8 @@ async function handleDialogFlowAction(
       console.log('id del producto :>> ', id);
       // AQUI SE TIENE QUE ADICIONAR EL AÑADIR A CARRITO
 
-      var date = new Date();
-      var fechaActual =
+       date = new Date();
+       fechaActual =
         ("00" + (date.getMonth() + 1)).slice(-2) + "/" +
         ("00" + date.getDate()).slice(-2) + "/" +
         date.getFullYear() + " " +
