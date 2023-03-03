@@ -377,12 +377,11 @@ async function handleDialogFlowAction(
         ("00" + date.getSeconds()).slice(-2);
 
       var sum = "";
-      await sendTextMessage(sender, "antes de carrito ");
+
 
       var clientCar = await Carrito.findOne({ "cliente": ObjectID(myCliente._id) });
       console.log('clientCarrito :>> ', clientCar);
 
-      await sendTextMessage(sender, "despues de carrito ");
       let CompraG = new Compra({
         date: fechaActual,
         total: clientCar.total,// suma de detalle carrito campo precio
@@ -390,7 +389,7 @@ async function handleDialogFlowAction(
         cliente: myCliente._id,
       })
 
-      await sendTextMessage(sender, "Despues de compras ");
+    
 
       console.log('clientCarrito :>> guardo');
 
