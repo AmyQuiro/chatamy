@@ -352,7 +352,6 @@ async function handleDialogFlowAction(
       var facebookId = sender;
       var myCliente = await client.findOne({ facebookId });
       console.log('myClient :>> ', myCliente);
-      await sendTextMessage(sender, "myClient ");
 
       // let facebook=sender;
 
@@ -372,7 +371,7 @@ async function handleDialogFlowAction(
       var clientCar = await Carrito.findOne({ "cliente": ObjectID(myCliente._id) });
       console.log('clientCarrito :>> ', clientCar);
       
-      let sumTotalCarrito= new logicaCarrito().sumacarritos(clientCar,sender);
+      let sumTotalCarrito= await new logicaCarrito().sumacarritos(clientCar,sender);
       console.log('sumTotalCarrito :>> ', sumTotalCarrito);
 
       let fechaAct=metodosGenerales.getFechaActual();
