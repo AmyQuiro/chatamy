@@ -201,6 +201,7 @@ async function handleDialogFlowAction(
     case "Prendas.info.action":
 
       let clothes = parameters.fields.clothes.stringValue;
+      
       console.log('clothes :>> ', clothes);
 
 
@@ -338,7 +339,7 @@ async function handleDialogFlowAction(
 
       let litaDetalleCarritoAMostrar = await getDetalleCarritoToDisplay(clientCarrito, sender);
 
-      console.log('listDetalleCarritoDisplay :>> ', litaDetalleCarritoAMostrar);
+      console.log('listDetalleCarritoDisplay :>> ',JSON.stringify(litaDetalleCarritoAMostrar) );
 
       sendGenericMessage(sender, litaDetalleCarritoAMostrar);
 
@@ -556,7 +557,7 @@ async function printFiles() {
 // sender= facebookID
 async function getDetalleCarritoToDisplay(carritoClient, sender) {
 
-   var ObjectID = require('mongodb').ObjectID; //validar si puede estar comentado 
+  var ObjectID = require('mongodb').ObjectID; //validar si puede estar comentado 
   console.info("inicio de detalle en carrito");
   let dblistDetalleCarrito = await CarritoDetalle.find({ "carrito": new ObjectID(carritoClient._id) });
   console.log("inicio de detalle", dblistDetalleCarrito);
