@@ -339,7 +339,7 @@ async function handleDialogFlowAction(
 
       let litaDetalleCarritoAMostrar = await getDetalleCarritoToDisplay(clientCarrito, sender);
 
-      console.log('listDetalleCarritoDisplay :>> ',JSON.stringify(litaDetalleCarritoAMostrar) );
+      console.log('listDetalleCarritoDisplay :>> ',litaDetalleCarritoAMostrar );
 
       sendGenericMessage(sender, litaDetalleCarritoAMostrar);
 
@@ -381,7 +381,7 @@ async function handleDialogFlowAction(
 
 
       var clientCar = await Carrito.findOne({ "cliente": ObjectID(myCliente._id) });
-      clientCar.status = 2;
+      // clientCar.status = 2;
 
       let suma = await sumacarritos(clientCar,sender);
 
