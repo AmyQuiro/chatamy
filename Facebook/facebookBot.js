@@ -353,6 +353,7 @@ async function handleDialogFlowAction(
       var facebookId = sender;
       var myCliente = await client.findOne({ facebookId });
       console.log('myClient :>> ', myCliente);
+      await sendTextMessage(sender, "myClient ");
 
       // let facebook=sender;
 
@@ -376,18 +377,20 @@ async function handleDialogFlowAction(
         ("00" + date.getSeconds()).slice(-2);
 
       var sum = "";
-
+      await sendTextMessage(sender, "antes de carrito ");
 
       var clientCar = await Carrito.findOne({ "cliente": ObjectID(myCliente._id) });
       console.log('clientCarrito :>> ', clientCar);
 
-
+      await sendTextMessage(sender, "despues de carrito ");
       let CompraG = new Compra({
         date: fechaActual,
         total: clientCar.total,// suma de detalle carrito campo precio
         idCarrito: clientCar.idCarrito,
         cliente: myCliente._id,
       })
+
+      await sendTextMessage(sender, "Despues de compras ");
 
       console.log('clientCarrito :>> guardo');
 
