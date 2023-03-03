@@ -18,7 +18,8 @@ const CompraDetalle = require("../Models/CompraDetalle");
 
 
 // logicas 
-const logicaCarrito=require('./logica/carritoLogica')
+const logicaCarrito=require('./logica/carritoLogica');
+const metodosGenerales = require("./logica/metodosGeneralesLogica");
 
 
 
@@ -274,14 +275,7 @@ async function handleDialogFlowAction(
       console.log('id del producto :>> ', id);
       // AQUI SE TIENE QUE ADICIONAR EL AÑADIR A CARRITO
 
-      var date = new Date();
-      var fechaActual =
-        ("00" + (date.getMonth() + 1)).slice(-2) + "/" +
-        ("00" + date.getDate()).slice(-2) + "/" +
-        date.getFullYear() + " " +
-        ("00" + date.getHours()).slice(-2) + ":" +
-        ("00" + date.getMinutes()).slice(-2) + ":" +
-        ("00" + date.getSeconds()).slice(-2);
+    
 
 
       console.log('sender :>> ', sender);
@@ -300,6 +294,7 @@ async function handleDialogFlowAction(
       let clientCarrito = await Carrito.findOne({ "cliente": ObjectID(myClient._id) });
       console.log('clientCarrito :>> ', clientCarrito);
 
+      let fechaActual=metodosGenerales.getFechaActual();
       if (!clientCarrito) {
         let carritoAGuardar = new Carrito({
           date: fechaActual,
@@ -371,14 +366,7 @@ async function handleDialogFlowAction(
 
       // let carrito = await Carrito.findOne(myCliente);
       //    console.log('lista de carrito dbListClothes :>> ', carrito);
-      var date = new Date();
-      var fechaActual =
-        ("00" + (date.getMonth() + 1)).slice(-2) + "/" +
-        ("00" + date.getDate()).slice(-2) + "/" +
-        date.getFullYear() + " " +
-        ("00" + date.getHours()).slice(-2) + ":" +
-        ("00" + date.getMinutes()).slice(-2) + ":" +
-        ("00" + date.getSeconds()).slice(-2);
+     
 
       
       var clientCar = await Carrito.findOne({ "cliente": ObjectID(myCliente._id) });
@@ -387,9 +375,10 @@ async function handleDialogFlowAction(
       let sumTotalCarrito= new logicaCarrito().sumacarritos(clientCar,sender);
       console.log('sumTotalCarrito :>> ', sumTotalCarrito);
 
+      let fechaAct=metodosGenerales.getFechaActual();
 
       let CompraG = new Compra({
-        date: fechaActual,
+        date: fechaAct,
         total: sumTotalCarrito,
         idCarrito: clientCar.idCarrito,
         cliente: myCliente._id,
