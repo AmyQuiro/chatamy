@@ -380,6 +380,7 @@ async function handleDialogFlowAction(
 
 
       var clientCar = await Carrito.findOne({ "cliente": ObjectID(myCliente._id) });
+      clientCar.status = 2;
 
       let suma = await sumacarritos(clientCar,sender);
 
@@ -473,26 +474,29 @@ async function handleDialogFlowAction(
       const result = await client.updateOne(filterClient, updateDoc, options);
       console.info("terminado de cambio de estado de usuario");
 
-   //   let suma = await sumacarritos(my)
+
+
       
       //INICIO NUEVO CARRITO
 
-      let nuevoCarrito = new Carrito({
-        date: fechaActual,
-        status: 1,
-        total: 0,
-        cliente: myClient._id
-      });
+      // let nuevoCarrito = new Carrito({
+      //   date: fechaActual,
+      //   status: 1,
+      //   total: 0,
+      //   cliente: myClient._id
+      // });
 
-      await nuevoCarrito.save((err, carritoDB) => {
-        if (err) {
-          console.log('err :>> ', err);
-          return console.info("hubo un error ");
-        }
-        console.log('nuevo carrito creado :>> ', carritoDB);
-        clientCarrito = carritoDB;
-      });
-      clientCar = nuevoCarrito;
+      // await nuevoCarrito.save((err, carritoDB) => {
+      //   if (err) {
+      //     console.log('err :>> ', err);
+      //     return console.info("hubo un error ");
+      //   }
+      //   console.log('nuevo carrito creado :>> ', carritoDB);
+      //   clientCarrito = carritoDB;
+      // });
+      
+      
+
       
       // FIN NUEVO CARRITO
 
