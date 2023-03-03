@@ -1,4 +1,5 @@
 const CarritoDetalle = require('../../Models/CarritosDetalle');
+const Product = require('../../Models/Products');
 
 
  class carritoLogica{
