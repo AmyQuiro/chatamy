@@ -17,6 +17,10 @@ const Compra = require("../Models/Compra");
 const CompraDetalle = require("../Models/CompraDetalle");
 
 
+// logicas 
+const logicaCarrito=require('./logica/carritoLogica')
+
+
 
 // ChatbotUser.find({},(err,res)=>{
 //   console.log(res);
@@ -367,8 +371,8 @@ async function handleDialogFlowAction(
 
       // let carrito = await Carrito.findOne(myCliente);
       //    console.log('lista de carrito dbListClothes :>> ', carrito);
-      var date = new Date();
-      var fechaActual =
+      let date = new Date();
+      let fechaActual =
         ("00" + (date.getMonth() + 1)).slice(-2) + "/" +
         ("00" + date.getDate()).slice(-2) + "/" +
         date.getFullYear() + " " +
@@ -376,15 +380,17 @@ async function handleDialogFlowAction(
         ("00" + date.getMinutes()).slice(-2) + ":" +
         ("00" + date.getSeconds()).slice(-2);
 
-      var sum = "";
-
-
+      
       var clientCar = await Carrito.findOne({ "cliente": ObjectID(myCliente._id) });
       console.log('clientCarrito :>> ', clientCar);
+      
+      let sumTotalCarrito= new logicaCarrito().sumacarritos(clientCar,sender);
+      console.log('sumTotalCarrito :>> ', sumTotalCarrito);
+
 
       let CompraG = new Compra({
         date: fechaActual,
-        total: clientCar.total,// suma de detalle carrito campo precio
+        total: sumTotalCarrito,
         idCarrito: clientCar.idCarrito,
         cliente: myCliente._id,
       })
