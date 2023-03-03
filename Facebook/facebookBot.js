@@ -556,7 +556,7 @@ async function printFiles() {
 // sender= facebookID
 async function getDetalleCarritoToDisplay(carritoClient, sender) {
 
-  // var ObjectID = require('mongodb').ObjectID; validar si puede estar comentado 
+   var ObjectID = require('mongodb').ObjectID; //validar si puede estar comentado 
   console.info("inicio de detalle en carrito");
   let dblistDetalleCarrito = await CarritoDetalle.find({ "carrito": new ObjectID(carritoClient._id) });
   console.log("inicio de detalle", dblistDetalleCarrito);
