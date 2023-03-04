@@ -227,11 +227,11 @@ async function handleDialogFlowAction(
 
       await sendTextMessage(sender, "Te muestro tu carrito ");
 
-      console.log("antes de  data.clientCarrito :>> ", data.clientCarrito);
+      console.log("antes de  data.carritoCliente :>> ", data.carritoCliente);
 
       let listDetalleCarritoDisplay =
         await carritoLogica.getDetalleCarritoToDisplay(
-          data.clientCarrito,
+          data.carritoCliente,
           sender
         );
 

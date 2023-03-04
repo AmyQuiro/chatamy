@@ -40,13 +40,9 @@ class carritoLogica {
     return suma;
   }
 
-  static async getDetalleCarritoToDisplay(clientCarrito, sender) {
-    console.info(
-      "getDetalleCarritoToDisplay inicio de detalle en carrito",
-      JSON.stringify(clientCarrito)
-    );
+  static async getDetalleCarritoToDisplay(carritoCliente, sender) {
     let dblistDetalleCarrito = await CarritoDetalle.find({
-      carrito: new ObjectID(clientCarrito._id),
+      carrito: new ObjectID(carritoCliente._id),
     });
     console.log("inicio de detalle", dblistDetalleCarrito);
 
