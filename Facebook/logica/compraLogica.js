@@ -2,12 +2,13 @@ const CarritosDetalle = require("../../Models/CarritosDetalle");
 const Compra = require("../../Models/Compra");
 const CompraDetalle = require("../../Models/CompraDetalle");
 const Products = require("../../Models/Products");
+const client = require("../../Models/client");
 const carritoLogica = require("./carritoLogica");
 const metodosGenerales = require("./metodosGeneralesLogica");
 const ObjectID = require("mongodb").ObjectID;
 class compraLogica {
   constructor() {}
-  static async compra() {
+  static async compra(clientCar, myClient) {
     let sumTotalCarrito = await carritoLogica.sumacarritos(clientCar);
     console.log("sumTotalCarrito :>> ", sumTotalCarrito);
 
@@ -17,7 +18,7 @@ class compraLogica {
       date: fechaAct,
       total: sumTotalCarrito,
       idCarrito: clientCar.idCarrito,
-      cliente: myCliente._id,
+      cliente: myClient._id,
     });
 
     console.log("CompraG :>> guardo");

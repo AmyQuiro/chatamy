@@ -154,12 +154,12 @@ class facebookAction {
 
     // logica compra - create Compra
 
-    compraLogica.compra();
+    await compraLogica.compra(clientCar, myClient);
 
     // hasta aqui es la compra
 
     var dbListCompras = await Compra.find({
-      cliente: ObjectID(myCliente._id),
+      cliente: ObjectID(myClient._id),
     });
     console.log("compra cliente :>> ", clientCar);
 
