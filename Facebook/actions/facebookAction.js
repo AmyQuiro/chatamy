@@ -197,7 +197,7 @@ class facebookAction {
 
     await Promise.all(
       dblistDetalleCarrito.map(async (myDetalle) => {
-        let myProduct = await Product.findOne({
+        let myProduct = await Products.findOne({
           _id: new ObjectID(myDetalle.product),
         });
 
