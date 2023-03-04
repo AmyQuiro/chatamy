@@ -1,10 +1,16 @@
+const Carrito = require("../../Models/Carrito");
 const CarritoDetalle = require("../../Models/CarritosDetalle");
 const Product = require("../../Models/Products");
-
+const ObjectID = require("mongodb").ObjectID;
 class carritoLogica {
   constructor() {}
-  static async sumacarritos(clientCarrito, sender) {
-    var ObjectID = require("mongodb").ObjectID;
+  static async getCarrito(client_id) {
+    var clientCar = await Carrito.findOne({
+      cliente: ObjectID(client_id),
+    });
+    return clientCar;
+  }
+  static async sumacarritos(clientCarrito) {
     console.info("inicio de detalle en carrito");
     let dblistDetalleCarrito = await CarritoDetalle.find({
       carrito: new ObjectID(clientCarrito._id),

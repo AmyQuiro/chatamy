@@ -2,6 +2,12 @@ const client = require("../../Models/client");
 const ObjectID = require("mongodb").ObjectID;
 
 class clienteLogica {
+  static async getClientByFacebookId(facebookId) {
+    var myCliente = await client.findOne({ facebookId });
+    console.log("myClient :>> ", myCliente);
+    return myCliente;
+  }
+
   static async setStatus(idcliente, dbListCompras) {
     console.info("Inicio de set status cliente");
     let filterClient = { _id: ObjectID(idcliente) };
