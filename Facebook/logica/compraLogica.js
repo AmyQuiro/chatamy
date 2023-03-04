@@ -64,7 +64,6 @@ class compraLogica {
     );
 
     console.info("inicio de cambio de estado de usuario");
-    console.log("facebookId :>> ", facebookId);
   }
 }
 module.exports = compraLogica;
