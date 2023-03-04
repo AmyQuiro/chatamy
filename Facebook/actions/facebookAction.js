@@ -97,14 +97,11 @@ class facebookAction {
     console.log("carritoCliente :>> ", carritoCliente);
 
     if (!carritoCliente) {
+      console.info("No tiene carrito, asi que se crea uno.");
       carritoCliente = await carritoLogica.crearCarritoAlCliente(
         myProduct,
         myClient
       );
-    }
-    if (!carritoCliente) {
-      console.info("No existe el carrito para añadir los detalles.");
-      return null;
     }
 
     let carritoDetalle = new CarritosDetalle({
@@ -126,6 +123,8 @@ class facebookAction {
       myProduct: myProduct,
       carritoCliente: carritoCliente,
     };
+
+    console.log("anadir_a_carrito data :>> ", JSON.stringify(data));
     return data;
   }
 
