@@ -165,7 +165,7 @@ class facebookAction {
 
     // Obtenemos el cliente y actualizamos su status
 
-    await clienteLogica.setStatus(myCliente._id, dbListCompras);
+    await clienteLogica.setStatus(myClient._id, dbListCompras);
     console.log("compra terminado :>> ", clientCar);
   }
 }
