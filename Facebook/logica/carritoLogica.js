@@ -3,7 +3,7 @@ const Product = require("../../Models/Products");
 
 class carritoLogica {
   constructor() {}
-  async sumacarritos(clientCarrito, sender) {
+  static async sumacarritos(clientCarrito, sender) {
     var ObjectID = require("mongodb").ObjectID;
     console.info("inicio de detalle en carrito");
     let dblistDetalleCarrito = await CarritoDetalle.find({
