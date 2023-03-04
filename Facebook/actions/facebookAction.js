@@ -5,6 +5,7 @@ const CompraDetalle = require("../../Models/CompraDetalle");
 const Products = require("../../Models/Products");
 const client = require("../../Models/client");
 const carritoLogica = require("../logica/carritoLogica");
+const clienteLogica = require("../logica/clienteLogica");
 const metodosGenerales = require("../logica/metodosGeneralesLogica");
 const productoLogica = require("../logica/productoLogica");
 
@@ -234,22 +235,9 @@ class facebookAction {
     console.log("compra cliente :>> ", clientCar);
 
     // Obtenemos el cliente y actualizamos su status
-    let filterClient = { _id: ObjectID(myCliente._id) };
-    console.info("filterClient");
 
-    const options = { upsert: false };
-    let newStatus = 3; // cliente
-    if (dbListCompras.length >= 3) {
-      newStatus = 4; // Cliente recurrente
-    }
+    clienteLogica.setStatus(myCliente._id, dbListCompras);
 
-    console.info("newStatus " + newStatus);
-    const updateDoc = {
-      $set: {
-        status: newStatus,
-      },
-    };
-    const result = await client.updateOne(filterClient, updateDoc, options);
     console.info("terminado de cambio de estado de usuario");
   }
 }
