@@ -198,6 +198,7 @@ async function handleDialogFlowAction(
   parameters,
   queryText
 ) {
+  console.info("====================================================");
   switch (action) {
     case "Prendas.info.action":
       let listClothesToDisplay = await facebookAction.PrendasAction(parameters);

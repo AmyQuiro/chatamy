@@ -91,33 +91,18 @@ class facebookAction {
     var myClient = await client.findOne({ facebookId });
     console.log("myClient :>> ", myClient);
 
-    console.info("====================================================");
-
-    let clientCarrito = await Carrito.findOne({
+    let carritoCliente = await Carrito.findOne({
       cliente: ObjectID(myClient._id),
     });
-    console.log("clientCarrito :>> ", clientCarrito);
+    console.log("carritoCliente :>> ", carritoCliente);
 
-    let fechaActual = metodosGenerales.getFechaActual();
-    if (!clientCarrito) {
-      let carritoAGuardar = new Carrito({
-        date: fechaActual,
-        status: 1,
-        total: myProduct.price,
-        cliente: myClient._id,
-      });
-
-      await carritoAGuardar.save((err, carritoDB) => {
-        if (err) {
-          console.log("err :>> ", err);
-          console.info("hubo un error al guardar el carrito");
-          return null;
-        }
-        console.log("carritoDB :>> ", carritoDB);
-        clientCarrito = carritoDB;
-      });
+    if (!carritoCliente) {
+      carritoCliente = await carritoLogica.crearCarritoAlCliente(
+        myProduct,
+        myClient
+      );
     }
-    if (!clientCarrito) {
+    if (!carritoCliente) {
       console.info("No existe el carrito para añadir los detalles.");
       return null;
     }
@@ -126,7 +111,7 @@ class facebookAction {
       price: myProduct.price,
       quantity: 1,
       product: myProduct._id,
-      carrito: clientCarrito._id,
+      carrito: carritoCliente._id,
     });
     await carritoDetalle.save((err, carritoDetalleDB) => {
       if (err) {
@@ -139,7 +124,7 @@ class facebookAction {
 
     let data = {
       myProduct: myProduct,
-      clientCarrito: clientCarrito,
+      carritoCliente: carritoCliente,
     };
     return data;
   }
@@ -150,7 +135,7 @@ class facebookAction {
     // logica carrito - getCarrito
     let clientCar = await carritoLogica.getCarrito(myClient._id);
 
-    console.log("clientCarrito :>> ", clientCar);
+    console.log("carritoCliente :>> ", clientCar);
 
     // logica compra - create Compra
 
