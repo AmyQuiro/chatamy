@@ -1,4 +1,5 @@
 const Carrito = require("../../Models/Carrito");
+const CarritosDetalle = require("../../Models/CarritosDetalle");
 const CarritoDetalle = require("../../Models/CarritosDetalle");
 const Product = require("../../Models/Products");
 const metodosGenerales = require("./metodosGeneralesLogica");
@@ -40,8 +41,10 @@ class carritoLogica {
   }
 
   static async getDetalleCarritoToDisplay(clientCarrito, sender) {
-    var ObjectID = require("mongodb").ObjectID;
-    console.info("inicio de detalle en carrito", JSON.stringify(clientCarrito));
+    console.info(
+      "getDetalleCarritoToDisplay inicio de detalle en carrito",
+      JSON.stringify(clientCarrito)
+    );
     let dblistDetalleCarrito = await CarritoDetalle.find({
       carrito: new ObjectID(clientCarrito._id),
     });
@@ -114,6 +117,23 @@ class carritoLogica {
     //   nuevoCarrito = carritoDB;
     // });
     // return nuevoCarrito;
+  }
+
+  static async guardarCarritoDetalle(myProduct, carritoCliente) {
+    let carritoDetalle = new CarritosDetalle({
+      price: myProduct.price,
+      quantity: 1,
+      product: myProduct._id,
+      carrito: carritoCliente._id,
+    });
+    await carritoDetalle.save((err, carritoDetalleDB) => {
+      if (err) {
+        console.log("err :>> ", err);
+        console.info("hubo un error al guardar el carrito detalle");
+        return null;
+      }
+      console.log("carritoDetalleDB :>> ", carritoDetalleDB);
+    });
   }
 }
 module.exports = carritoLogica;

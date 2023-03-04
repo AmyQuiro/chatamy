@@ -103,21 +103,7 @@ class facebookAction {
         myClient
       );
     }
-
-    let carritoDetalle = new CarritosDetalle({
-      price: myProduct.price,
-      quantity: 1,
-      product: myProduct._id,
-      carrito: carritoCliente._id,
-    });
-    await carritoDetalle.save((err, carritoDetalleDB) => {
-      if (err) {
-        console.log("err :>> ", err);
-        console.info("hubo un error al guardar el carrito detalle");
-        return null;
-      }
-      console.log("carritoDetalleDB :>> ", carritoDetalleDB);
-    });
+    await carritoLogica.guardarCarritoDetalle(myProduct, carritoCliente);
 
     let data = {
       myProduct: myProduct,
