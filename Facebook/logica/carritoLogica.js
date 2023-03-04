@@ -19,7 +19,6 @@ class carritoLogica {
   }
 
   static async sumacarritos(clientCarrito) {
-    console.info("inicio de detalle en carrito");
     let dblistDetalleCarrito = await CarritoDetalle.find({
       carrito: new ObjectID(clientCarrito._id),
     });
@@ -42,7 +41,7 @@ class carritoLogica {
 
   static async getDetalleCarritoToDisplay(clientCarrito, sender) {
     var ObjectID = require("mongodb").ObjectID;
-    console.info("inicio de detalle en carrito");
+    console.info("inicio de detalle en carrito", JSON.stringify(clientCarrito));
     let dblistDetalleCarrito = await CarritoDetalle.find({
       carrito: new ObjectID(clientCarrito._id),
     });
