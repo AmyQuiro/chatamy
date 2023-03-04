@@ -236,7 +236,7 @@ class facebookAction {
 
     // Obtenemos el cliente y actualizamos su status
 
-    clienteLogica.setStatus(myCliente._id, dbListCompras);
+    await clienteLogica.setStatus(myCliente._id, dbListCompras);
 
     console.info("terminado de cambio de estado de usuario");
   }

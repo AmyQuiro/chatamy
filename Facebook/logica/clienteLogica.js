@@ -1,7 +1,7 @@
 const client = require("../../Models/client");
+const ObjectID = require("mongodb").ObjectID;
 
 class clienteLogica {
-  ObjectID = require("mongodb").ObjectID;
   static async setStatus(idcliente, dbListCompras) {
     console.info("Inicio de set status cliente");
     let filterClient = { _id: ObjectID(idcliente) };
