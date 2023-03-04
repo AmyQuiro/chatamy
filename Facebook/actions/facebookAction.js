@@ -167,6 +167,10 @@ class facebookAction {
 
     await clienteLogica.setStatus(myClient._id, dbListCompras);
     console.log("compra terminado :>> ", clientCar);
+
+    carritoLogica.carritoClear(clientCar);
+
+    console.log("carrito limpio :>> ", clientCar);
   }
 }
 

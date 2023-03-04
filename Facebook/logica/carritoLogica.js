@@ -4,12 +4,19 @@ const Product = require("../../Models/Products");
 const ObjectID = require("mongodb").ObjectID;
 class carritoLogica {
   constructor() {}
+
+  static async carritoClear(mycarrito) {
+    const deletedCar = await Carrito.deleteOne({ _id: mycarrito._id });
+    console.log({ deletedCar });
+  }
+
   static async getCarrito(client_id) {
     var clientCar = await Carrito.findOne({
       cliente: ObjectID(client_id),
     });
     return clientCar;
   }
+
   static async sumacarritos(clientCarrito) {
     console.info("inicio de detalle en carrito");
     let dblistDetalleCarrito = await CarritoDetalle.find({
