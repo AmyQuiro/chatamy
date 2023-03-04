@@ -200,6 +200,9 @@ async function handleDialogFlowAction(
 ) {
   console.info("====================================================");
   switch (action) {
+    case "ci.action":
+      await sendTextMessage(sender, "ci recivido");
+      break;
     case "Prendas.info.action":
       let listClothesToDisplay = await facebookAction.PrendasAction(parameters);
       sendGenericMessage(sender, listClothesToDisplay);
