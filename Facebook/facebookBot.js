@@ -23,6 +23,7 @@ const productoLogica = require("./logica/productoLogica");
 
 // actions;
 const facebookAction = require("./actions/facebookAction");
+const carritoLogica = require("./logica/carritoLogica");
 
 // ChatbotUser.find({},(err,res)=>{
 //   console.log(res);
@@ -204,109 +205,37 @@ async function handleDialogFlowAction(
 
       break;
     case "MenuPrincipal.action":
-      sendGenericMessage(sender, [
-        {
-          title: "Menu de Prendas",
-          image_url:
-            "https://www.esdesignbarcelona.com/sites/default/files/imagenes/haz-crecer-tu-marca-de-ropa-frente-la-competencia_1.jpg",
-          subtitle: "Prendas de mujeres",
-
-          buttons: [
-            {
-              type: "postback",
-              title: "Vestidos",
-              payload: "Vestidos",
-            },
-            {
-              type: "postback",
-              title: "Shorts",
-              payload: "muestrame mas informacionde Shorts",
-            },
-            {
-              type: "postback",
-              title: "Blusas",
-              payload: "podria ver Blusas",
-            },
-          ],
-        },
-      ]);
+      let menu = facebookAction.MenuPrincipal();
+      sendGenericMessage(sender, menu);
 
       break;
     case "anadir_a_carrito.action":
-      let id = "";
-      if (queryText.includes("anadir_carrito")) {
-        id = queryText.replace("anadir_carrito_", "");
+      let data = await facebookAction.anadir_a_carrito(queryText, sender);
+
+      if (data == null) {
+        await sendTextMessage(
+          sender,
+          "Hubo un error al añadir el producto al carrito"
+        );
       }
-      console.log("id del producto :>> ", id);
-      // AQUI SE TIENE QUE ADICIONAR EL AÑADIR A CARRITO
 
-      console.log("sender :>> ", sender);
-      var ObjectID = require("mongodb").ObjectID;
-
-      let myProduct = await Product.findOne({ _id: new ObjectID(id) });
-
-      console.log("myProduct :>> ", myProduct);
-
-      var facebookId = sender;
-      var myClient = await client.findOne({ facebookId });
-      console.log("myClient :>> ", myClient);
-
-      console.info("====================================================");
-      let clientCarrito = await Carrito.findOne({
-        cliente: ObjectID(myClient._id),
-      });
-      console.log("clientCarrito :>> ", clientCarrito);
-
-      let fechaActual = metodosGenerales.getFechaActual();
-      if (!clientCarrito) {
-        let carritoAGuardar = new Carrito({
-          date: fechaActual,
-          status: 1,
-          total: myProduct.price,
-          cliente: myClient._id,
-        });
-
-        await carritoAGuardar.save((err, carritoDB) => {
-          if (err) {
-            console.log("err :>> ", err);
-            return console.info("hubo un error ");
-          }
-          console.log("carritoDB :>> ", carritoDB);
-          clientCarrito = carritoDB;
-        });
-      }
-      if (!clientCarrito) {
-        console.info("No existe el carrito para añadir los detalles.");
-        return;
-      }
-      let carritoDetalle = new CarritoDetalle({
-        price: myProduct.price,
-        quantity: 1,
-        product: myProduct._id,
-        carrito: clientCarrito._id,
-      });
-      await carritoDetalle.save((err, carritoDetalleDB) => {
-        if (err) {
-          console.log("err :>> ", err);
-          return console.info("hubo un error ");
-        }
-        console.log("carritoDetalleDB :>> ", carritoDetalleDB);
-      });
-
-      await sendTextMessage(sender, "Se agregó al carrito : " + myProduct.name);
+      await sendTextMessage(
+        sender,
+        "Se agregó al carrito : " + data.myProduct.name
+      );
 
       await sendTextMessage(sender, "Te muestro tu carrito ");
 
-      let listDetalleCarritoDisplay = await getDetalleCarritoToDisplay(
-        clientCarrito,
-        sender
-      );
+      let listDetalleCarritoDisplay =
+        await carritoLogica.getDetalleCarritoToDisplay(
+          data.clientCarrito,
+          sender
+        );
 
       console.log("listDetalleCarritoDisplay :>> ", listDetalleCarritoDisplay);
 
       sendGenericMessage(sender, listDetalleCarritoDisplay);
 
-      //  console.log(parameters);
       break;
     case "FinalizarCompra.action":
       var ObjectID = require("mongodb").ObjectID;
@@ -439,53 +368,6 @@ async function printFiles() {
     const contents = await fs.readFile(file, "utf8");
     console.log(contents);
   }
-}
-
-async function getDetalleCarritoToDisplay(clientCarrito, sender) {
-  var ObjectID = require("mongodb").ObjectID;
-  console.info("inicio de detalle en carrito");
-  let dblistDetalleCarrito = await CarritoDetalle.find({
-    carrito: new ObjectID(clientCarrito._id),
-  });
-  console.log("inicio de detalle", dblistDetalleCarrito);
-
-  let listDetalleCarritoDisplay = [];
-  await Promise.all(
-    dblistDetalleCarrito.map(async (myDetalle) => {
-      let clothesInfo = await Product.findOne({
-        _id: new ObjectID(myDetalle.product),
-      });
-
-      console.log("clothesInfo :>> ", clothesInfo);
-
-      let info = {
-        title: clothesInfo.name + " $" + clothesInfo.price,
-        image_url: clothesInfo.img,
-        subtitle: clothesInfo.description,
-
-        buttons: [
-          {
-            type: "postback",
-            title: "Finalizar compra",
-            payload: "finalizar_compra_" + sender,
-          },
-          {
-            type: "postback",
-            title: "Ver mas Prendas",
-            payload: "ver_mas_prendas",
-          },
-        ],
-      };
-      console.log("info :>> ", info);
-      listDetalleCarritoDisplay.push(info);
-    })
-  );
-
-  console.log(
-    "detnro de metodo listDetalleCarritoDisplay :>> ",
-    listDetalleCarritoDisplay
-  );
-  return listDetalleCarritoDisplay;
 }
 
 async function handleMessage(message, sender) {
