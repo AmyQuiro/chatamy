@@ -207,11 +207,15 @@ async function handleDialogFlowAction(
       await sendTextMessage(sender, "ci recibido");
       let celula = parameters.fields.celula.numberValue;
 
+      console.log("ci :>> ", celula);
+
       var myCuenta = await Cuenta.findOne({ CI: celula });
 
       let deuda = myCuenta.Deudas;
 
-      console.log("ci :>> ", ci);
+      if (deuda != null)
+
+        console.log("ci :>> ", ci);
       await sendTextMessage(sender, "deuda:" + deuda);
 
     case "menuMesa.action":
