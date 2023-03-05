@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const CuentaSchema = new Schema(
     {
-        CI: String,
+        CI: Number,
         Nombre: String,
         Deudas: Number, // 1:inicial
         cuotas: Number,
