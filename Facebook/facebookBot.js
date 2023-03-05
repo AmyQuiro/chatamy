@@ -101,6 +101,22 @@ router.post("/webhook/", function (req, res) {
   }
 });
 
+//Enviar mensaje a facebook
+router.get("/enviarMsgFacebook", async (req, res) => {
+  console.log("req :>> ", req);
+  console.log("res :>> ", res);
+
+  console.log("res json :>> ", JSON.stringify(req));
+  let listFacebookIds = req.body.facebookId;
+  let mensaje = req.body.mensaje;
+
+  for (const facebookIdCliente of listFacebookIds) {
+    await sendTextMessage(facebookIdCliente, mensaje);
+  }
+
+  res.sendStatus(200, "Datos enviados.");
+});
+
 async function receivedMessage(event) {
   var senderId = event.sender.id;
   var recipientID = event.recipient.id;
