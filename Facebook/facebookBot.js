@@ -206,7 +206,22 @@ async function handleDialogFlowAction(
     case "verDeuda.action":
 
       let celula = parameters.fields.celula.numberValue;
-      facebookAction.verDeuda(celula);
+      console.log("ci :>> ", celula);
+
+      var myCuenta = await Cuenta.findOne({ CI: celula });
+      if (myCuenta == null) {
+
+        await sendTextMessage(sender, "no exite una cuenta con ese numero de ci");
+      }
+
+      let deuda = myCuenta.Deudas;
+      if (deuda == 0) {
+        await sendTextMessage(sender, "no tienes deudas pendientes");
+      }
+
+
+
+      await sendTextMessage(sender, "la deuda a padar es:" + deuda);
 
       break;
 
