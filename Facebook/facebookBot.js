@@ -204,19 +204,11 @@ async function handleDialogFlowAction(
   console.info("====================================================");
   switch (action) {
     case "verDeuda.action":
-      await sendTextMessage(sender, "ci recibido");
+
       let celula = parameters.fields.celula.numberValue;
+      facebookAction.verDeuda(celula);
 
-      console.log("ci :>> ", celula);
-
-      var myCuenta = await Cuenta.findOne({ CI: celula });
-
-      let deuda = myCuenta.Deudas;
-
-
-
-
-      await sendTextMessage(sender, "deuda:" + deuda);
+      break;
 
     case "menuMesa.action":
       let menumesa = facebookAction.menuMesa();

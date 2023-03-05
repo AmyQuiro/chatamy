@@ -9,9 +9,28 @@ const clienteLogica = require("../logica/clienteLogica");
 const compraLogica = require("../logica/compraLogica");
 const metodosGenerales = require("../logica/metodosGeneralesLogica");
 const productoLogica = require("../logica/productoLogica");
+const Cuenta = require("../../Models/Cuenta");
 const ObjectID = require("mongodb").ObjectID;
 
 class facebookAction {
+  static async verDeuda(celula) {
+    console.log("ci :>> ", celula);
+
+    var myCuenta = await Cuenta.findOne({ CI: celula });
+    if (myCuenta == null) {
+      await sendTextMessage(sender, "no exite una cuenta con ese numero de ci");
+    }
+
+    let deuda = myCuenta.Deudas;
+    if (deuda == 0) {
+      await sendTextMessage(sender, "no tienes deudas pendientes");
+    }
+
+
+
+    await sendTextMessage(sender, "la deuda a padar es:" + deuda);
+  }
+
   static async PrendasAction(parameters) {
     let clothes = parameters.fields.clothes.stringValue;
     console.log("clothes :>> ", clothes);
