@@ -6,9 +6,10 @@ const DeudaSchema = new Schema(
     {
         concepto: String,
         monto: Number,
-        idcliente: {
+        ci: Number,
+        idCuota: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "Clientes"
+            ref: "cuenta"
         },
         status: Number,//1:Pendiente ;  2:Pagado
     },

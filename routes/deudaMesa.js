@@ -15,10 +15,12 @@ router.post("", (req, res) => {
     let body = req.body;
     let myDeuda = new DeudaMesa({
         concepto: body.concepto,
-        idcliente: body.idcliente,
-        status: body.status,
-        phone: body.phone,
         monto: body.monto,
+        ci: body.ci,
+        idCuota: body.idCuota,
+        status: body.status,
+        // phone: body.phone,
+
 
     });
     myDeuda.save((err, deudaDB) => {

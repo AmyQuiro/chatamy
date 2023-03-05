@@ -9,9 +9,12 @@ const clienteLogica = require("../logica/clienteLogica");
 const compraLogica = require("../logica/compraLogica");
 const metodosGenerales = require("../logica/metodosGeneralesLogica");
 const productoLogica = require("../logica/productoLogica");
+const Cuenta = require("../../Models/Cuenta");
 const ObjectID = require("mongodb").ObjectID;
 
 class facebookAction {
+
+
   static async PrendasAction(parameters) {
     let clothes = parameters.fields.clothes.stringValue;
     console.log("clothes :>> ", clothes);
@@ -66,6 +69,35 @@ class facebookAction {
             type: "postback",
             title: "Blusas",
             payload: "podria ver Blusas",
+          },
+        ],
+      },
+    ];
+  }
+
+  static menuMesa() {
+    return [
+      {
+        title: "Menu ",
+        image_url:
+          "https://www.esdesignbarcelona.com/sites/default/files/imagenes/haz-crecer-tu-marca-de-ropa-frente-la-competencia_1.jpg",
+        subtitle: "Prendas de mujeres",
+
+        buttons: [
+          {
+            type: "postback",
+            title: "ver deuda",
+            payload: "ver deuda",
+          },
+          {
+            type: "postback",
+            title: "pagar deuda",
+            payload: "pagar deuda",
+          },
+          {
+            type: "postback",
+            title: "ver pagos",
+            payload: "ver pagos",
           },
         ],
       },

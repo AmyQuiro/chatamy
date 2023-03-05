@@ -25,6 +25,7 @@ const productoLogica = require("./logica/productoLogica");
 const facebookAction = require("./actions/facebookAction");
 const carritoLogica = require("./logica/carritoLogica");
 const clienteLogica = require("./logica/clienteLogica");
+const Cuenta = require("../Models/Cuenta");
 
 // ChatbotUser.find({},(err,res)=>{
 //   console.log(res);
@@ -218,8 +219,35 @@ async function handleDialogFlowAction(
 ) {
   console.info("====================================================");
   switch (action) {
+    case "verDeuda.action":
+
+      let celula = parameters.fields.celula.numberValue;
+      console.log("ci :>> ", celula);
+
+      var myCuenta = await Cuenta.findOne({ CI: celula });
+      if (myCuenta == null) {
+
+        await sendTextMessage(sender, "no exite una cuenta con ese numero de ci");
+      }
+
+      let deuda = myCuenta.Deudas;
+      if (deuda == 0) {
+        await sendTextMessage(sender, "no tienes deudas pendientes");
+      }
+
+
+
+      await sendTextMessage(sender, "la deuda a padar es:" + deuda);
+
+      break;
+
+    case "menuMesa.action":
+      let menumesa = facebookAction.menuMesa();
+      sendGenericMessage(sender, menumesa);
+
+      break;
     case "ci.action":
-      await sendTextMessage(sender, "ci recivido");
+      await sendTextMessage(sender, "ci recibido");
       let ci = parameters.fields.ci.numberValue;
       console.log("ci :>> ", ci);
       console.log("parameters :>> ", parameters);
