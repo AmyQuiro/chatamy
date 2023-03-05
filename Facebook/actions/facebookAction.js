@@ -83,18 +83,18 @@ class facebookAction {
         buttons: [
           {
             type: "postback",
-            title: "ver informacion de deuda",
-            payload: "ver informacion de deuda",
+            title: "ver deuda",
+            payload: "ver deuda",
           },
           {
             type: "postback",
-            title: "Quiero pagar deuda",
-            payload: "Quiero pagar deuda",
+            title: "pagar deuda",
+            payload: "pagar deuda",
           },
           {
             type: "postback",
-            title: "ver informacion de deudas pagaas",
-            payload: "ver informacion de deudas pagaas",
+            title: "ver pagos",
+            payload: "ver pagos",
           },
         ],
       },

@@ -25,6 +25,7 @@ const productoLogica = require("./logica/productoLogica");
 const facebookAction = require("./actions/facebookAction");
 const carritoLogica = require("./logica/carritoLogica");
 const clienteLogica = require("./logica/clienteLogica");
+const Cuenta = require("../Models/Cuenta");
 
 // ChatbotUser.find({},(err,res)=>{
 //   console.log(res);
@@ -202,13 +203,24 @@ async function handleDialogFlowAction(
 ) {
   console.info("====================================================");
   switch (action) {
+    case "verDeuda.action":
+      await sendTextMessage(sender, "ci recibido");
+      let celula = parameters.fields.celula.stringValue;
+
+      var myCuenta = await Cuenta.findOne({ CI: celula });
+
+      let deuda = myCuenta.Deudas;
+
+      console.log("ci :>> ", ci);
+      await sendTextMessage(sender, "deuda:" + deuda);
+
     case "menuMesa.action":
       let menumesa = facebookAction.menuMesa();
       sendGenericMessage(sender, menumesa);
 
       break;
     case "ci.action":
-      await sendTextMessage(sender, "ci recivido");
+      await sendTextMessage(sender, "ci recibido");
       let ci = parameters.fields.ci.numberValue;
       console.log("ci :>> ", ci);
       console.log("parameters :>> ", parameters);
