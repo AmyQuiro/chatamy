@@ -155,6 +155,7 @@ async function saveUserData(facebookId) {
     profilePic: userData.profile_pic,
     status: 1, //prospecto
     phone: "",
+    ci: "",
     email: "amygalaxies@gmail.com",
     //carrito:null // revisar si tiene que ir el carrito
   });
