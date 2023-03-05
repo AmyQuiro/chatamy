@@ -205,7 +205,7 @@ async function handleDialogFlowAction(
   switch (action) {
     case "verDeuda.action":
       await sendTextMessage(sender, "ci recibido");
-      let celula = parameters.fields.celula.stringValue;
+      let celula = parameters.fields.celula.numberValue;
 
       var myCuenta = await Cuenta.findOne({ CI: celula });
 
