@@ -202,6 +202,11 @@ async function handleDialogFlowAction(
 ) {
   console.info("====================================================");
   switch (action) {
+    case "menuMesa.action":
+      let menumesa = facebookAction.menuMesa();
+      sendGenericMessage(sender, menumesa);
+
+      break;
     case "ci.action":
       await sendTextMessage(sender, "ci recivido");
       let ci = parameters.fields.ci.numberValue;

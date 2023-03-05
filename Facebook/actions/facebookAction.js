@@ -72,6 +72,35 @@ class facebookAction {
     ];
   }
 
+  static menuMesa() {
+    return [
+      {
+        title: "Menu ",
+        image_url:
+          "https://www.esdesignbarcelona.com/sites/default/files/imagenes/haz-crecer-tu-marca-de-ropa-frente-la-competencia_1.jpg",
+        subtitle: "Prendas de mujeres",
+
+        buttons: [
+          {
+            type: "postback",
+            title: "ver informacion de deuda",
+            payload: "ver informacion de deuda",
+          },
+          {
+            type: "postback",
+            title: "Quiero pagar deuda",
+            payload: "Quiero pagar deuda",
+          },
+          {
+            type: "postback",
+            title: "ver informacion de deudas pagaas",
+            payload: "ver informacion de deudas pagaas",
+          },
+        ],
+      },
+    ];
+  }
+
   static async anadir_a_carrito(queryText, sender) {
     let id = "";
     if (queryText.includes("anadir_carrito")) {

@@ -15,6 +15,7 @@ router.use('/client', require('./client'));
 router.use('/compra', require('./compra'));
 router.use('/promocion', require('./promocion'));
 router.use('/deuda', require('./deudaMesa'));
+router.use('/Cuenta', require('./cuenta'));
 
 
 
