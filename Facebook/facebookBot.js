@@ -213,9 +213,9 @@ async function handleDialogFlowAction(
 
       let deuda = myCuenta.Deudas;
 
-      if (deuda != null)
 
-        console.log("ci :>> ", ci);
+
+
       await sendTextMessage(sender, "deuda:" + deuda);
 
     case "menuMesa.action":
