@@ -204,7 +204,7 @@ async function handleDialogFlowAction(
   switch (action) {
     case "ci.action":
       await sendTextMessage(sender, "ci recivido");
-      let ci = parameters.fields.ci;
+      let ci = parameters.fields.ci.numberValue;
       console.log("ci :>> ", ci);
       console.log("parameters :>> ", parameters);
       clienteLogica.setCi(sender, ci);
