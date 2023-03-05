@@ -24,6 +24,7 @@ const productoLogica = require("./logica/productoLogica");
 // actions;
 const facebookAction = require("./actions/facebookAction");
 const carritoLogica = require("./logica/carritoLogica");
+const clienteLogica = require("./logica/clienteLogica");
 
 // ChatbotUser.find({},(err,res)=>{
 //   console.log(res);
@@ -202,9 +203,10 @@ async function handleDialogFlowAction(
   switch (action) {
     case "ci.action":
       await sendTextMessage(sender, "ci recivido");
-      console.log("ci :>> ", parameters);
-      console.log("queryText :>> ", queryText);
-      console.log("messages :>> ", messages);
+      let ci = parameters.fields.ci.stringValue;
+      console.log("ci :>> ", ci);
+      clienteLogica.setCi(sender, ci);
+
       break;
     case "Prendas.info.action":
       let listClothesToDisplay = await facebookAction.PrendasAction(parameters);
