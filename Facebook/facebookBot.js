@@ -104,10 +104,7 @@ router.post("/webhook/", function (req, res) {
 
 //Enviar mensaje a facebook
 router.get("/enviarMsgFacebook", async (req, res) => {
-  console.log("req :>> ", req);
-  console.log("res :>> ", res);
-
-  console.log("res json :>> ", JSON.stringify(req));
+  console.log("res json :>> ", JSON.stringify(req.body));
   let listFacebookIds = req.body.facebookId;
   let mensaje = req.body.mensaje;
 
@@ -220,22 +217,21 @@ async function handleDialogFlowAction(
   console.info("====================================================");
   switch (action) {
     case "verDeuda.action":
-
       let celula = parameters.fields.celula.numberValue;
       console.log("ci :>> ", celula);
 
       var myCuenta = await Cuenta.findOne({ CI: celula });
       if (myCuenta == null) {
-
-        await sendTextMessage(sender, "no exite una cuenta con ese numero de ci");
+        await sendTextMessage(
+          sender,
+          "no exite una cuenta con ese numero de ci"
+        );
       }
 
       let deuda = myCuenta.Deudas;
       if (deuda == 0) {
         await sendTextMessage(sender, "no tienes deudas pendientes");
       }
-
-
 
       await sendTextMessage(sender, "la deuda a padar es:" + deuda);
 
