@@ -234,9 +234,9 @@ async function handleDialogFlowAction(
           listaPagos.map(async (element) => {
             await sendTextMessage(
               sender,
-              "el concepto de pago es:" +
+              "el concepto de pago es : " +
                 element.concepto +
-                " y el monto es:" +
+                " y el monto pagado es: " +
                 element.monto
             );
           })
@@ -276,7 +276,7 @@ async function handleDialogFlowAction(
 
           await cuentaLogica.setDeuda(monto, ci);
 
-          await sendTextMessage(sender, "La deuda actual es :" + deuda);
+          await sendTextMessage(sender, "La deuda actual es :" + monto);
 
           let menumesa = facebookAction.menuMesa(ci);
           sendGenericMessage(sender, menumesa);
@@ -289,7 +289,7 @@ async function handleDialogFlowAction(
           console.log("verDeuda ci :>> ", ci);
           let deuda = await cuentaLogica.getDeuda(ci);
 
-          await sendTextMessage(sender, "Su deuda es de:" + deuda);
+          await sendTextMessage(sender, "Su deuda es de : " + deuda);
 
           await sendTextMessage(sender, "Que acción desea realizar:");
           let menumesa = facebookAction.menuMesa(ci);
