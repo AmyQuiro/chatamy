@@ -13,8 +13,6 @@ const Cuenta = require("../../Models/Cuenta");
 const ObjectID = require("mongodb").ObjectID;
 
 class facebookAction {
-
-
   static async PrendasAction(parameters) {
     let clothes = parameters.fields.clothes.stringValue;
     console.log("clothes :>> ", clothes);
@@ -76,20 +74,18 @@ class facebookAction {
   }
 
   static menuMesa(ci) {
-
     let botonVerDeuda = {
       type: "postback",
       title: "ver deuda",
-      payload: "ver deuda"
+      payload: "ver deuda",
     };
 
     let botonPagarDeuda = {
       type: "postback",
-      title: "pagar deuda",
+      title: "pagar",
       payload: "pagar deuda",
-    }
-    let botonVerPagos =
-    {
+    };
+    let botonVerPagos = {
       type: "postback",
       title: "ver pagos",
       payload: "ver pagos",
@@ -112,7 +108,7 @@ class facebookAction {
           "https://previews.123rf.com/images/ylivdesign/ylivdesign1612/ylivdesign161202203/66987914-dinero-en-efectivo-en-icono-de-la-mano-ilustraci%C3%B3n-de-dibujos-animados-de-dinero-en-efectivo-en-el.jpg",
         subtitle: "que desea hacer?",
 
-        buttons: listaBotones
+        buttons: listaBotones,
       },
     ];
 
