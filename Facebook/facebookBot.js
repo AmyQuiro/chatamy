@@ -234,7 +234,10 @@ async function handleDialogFlowAction(
           listaPagos.map(async (element) => {
             await sendTextMessage(
               sender,
-              "concepto " + element.concepto + " y el monto es:" + element.monto
+              "el concepto de pago es:" +
+                element.concepto +
+                " y el monto es:" +
+                element.monto
             );
           })
         );
@@ -243,16 +246,19 @@ async function handleDialogFlowAction(
         {
           console.log("queryText :>> ", queryText);
           let ci = "";
-          if (queryText.includes("ver_pagos_")) {
-            ci = queryText.replace("ver_pagos_", "");
+          if (queryText.includes("pagar_deuda_")) {
+            ci = queryText.replace("pagar_deuda_", "");
           }
 
           let myCuenta = await cuentaLogica.getCuenta(ci);
-          await sendTextMessage(sender, "La deuda es :" + deuda);
 
-          await cuentaLogica.setDeuda(deuda, ci);
+          let deuda = myCuenta.Deudas;
+          let monto = deuda - deuda;
+          await cuentaLogica.setDeuda(monto, ci);
 
           await sendTextMessage(sender, "La deuda que se pago es :" + deuda);
+
+          await sendTextMessage(sender, "La deuda actual es :" + monto);
         }
         break;
 
