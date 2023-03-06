@@ -251,9 +251,11 @@ async function handleDialogFlowAction(
           }
 
           let deuda = await cuentaLogica.getDeuda(ci);
+
+          await sendTextMessage(sender, "La deuda es :" + deuda);
+
           deuda = deuda - deuda;
           let myCuenta = await cuentaLogica.getCuenta(ci);
-          await sendTextMessage(sender, "La deuda es :" + deuda);
 
           let myPago = new Pagos({
             concepto: "pago realizado",
@@ -293,9 +295,6 @@ async function handleDialogFlowAction(
         break;
       case "menuMesa.action":
         {
-          // let celula = parameters.fields.celula.numberValue;
-          // let queryText = parameters.fields.queryText.stringValue;
-
           let menumesa = facebookAction.menuMesa(null);
           sendGenericMessage(sender, menumesa);
         }
