@@ -254,7 +254,7 @@ async function handleDialogFlowAction(
 
           await sendTextMessage(sender, "La deuda es :" + deuda);
 
-          deuda = deuda - deuda;
+          let monto = deuda - deuda;
           let myCuenta = await cuentaLogica.getCuenta(ci);
 
           let myPago = new Pagos({
@@ -274,7 +274,7 @@ async function handleDialogFlowAction(
             console.log("myPago :>> ", myPago);
           });
 
-          await cuentaLogica.setDeuda(deuda, ci);
+          await cuentaLogica.setDeuda(monto, ci);
 
           await sendTextMessage(sender, "La deuda actual es :" + deuda);
 
