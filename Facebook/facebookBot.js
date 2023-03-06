@@ -227,7 +227,26 @@ async function handleDialogFlowAction(
           }
 
           let deuda = await cuentaLogica.getDeuda(ci);
-          await sendTextMessage(sender, "la deuda es :" + deuda);
+          let myCuenta = await cuentaLogica.getCuenta(ci);
+          await sendTextMessage(sender, "La deuda es :" + deuda);
+
+          let myPago = new Pagos({
+            concepto: "pago realizado",
+            monto: deuda,
+            ci: ci,
+            idCuenta: myCuenta._id,
+            status: body.status,
+            // phone: body.phone,
+          });
+          myPago.save((err, pagosDB) => {
+            if (err) return res.json({ ok: false, msg: "Hubo un error" });
+            res.json({
+              ok: true,
+              msg: "Deuda creado correctamente",
+              product: pagosDB,
+            });
+          });
+          await sendTextMessage(sender, "La deuda que se pago es :" + deuda);
         }
         break;
 

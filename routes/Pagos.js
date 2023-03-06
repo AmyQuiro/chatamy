@@ -1,42 +1,28 @@
 const express = require("express");
 const router = express.Router();
 
-
-const DeudaMesa = require("../Models/DeudaMesa");
-
-
-router.get("", async (req, res) => {
-    let deudas = await DeudaMesa.find();
-    res.json(deudas);
-
-});
+const Pagos = require("../Models/Pagos");
 
 router.post("", (req, res) => {
-    let body = req.body;
-    let myDeuda = new DeudaMesa({
-        concepto: body.concepto,
-        monto: body.monto,
-        ci: body.ci,
-        idCuota: body.idCuota,
-        status: body.status,
-        // phone: body.phone,
+  let body = req.body;
 
-
+  let myPago = new Pagos({
+    concepto: body.concepto,
+    monto: body.monto,
+    ci: body.ci,
+    idCuenta: body.idCuenta,
+    status: body.status,
+    // phone: body.phone,
+  });
+  myPago.save((err, pagosDB) => {
+    if (err) return res.json({ ok: false, msg: "Hubo un error" });
+    res.json({
+      ok: true,
+      msg: "Deuda creado correctamente",
+      product: pagosDB,
     });
-    myDeuda.save((err, deudaDB) => {
-        if (err) return res.json({ ok: false, msg: "Hubo un error" });
-        res.json({
-            ok: true,
-            msg: "Deuda creado correctamente",
-            product: deudaDB,
-        });
-    });
+  });
 });
-
-
-
-
-
 
 // router.post("/updateClientStatus", async (req, res) => {
 //     // create a filter for a movie to update
