@@ -220,28 +220,30 @@ async function handleDialogFlowAction(
   try {
     console.info("====================================================");
     switch (action) {
-      case "verPagos.action": {
-        console.log("entro a  verPaagosAction :>> ", queryText);
-        console.log("queryText :>> ", queryText);
-        let ci = "";
-        if (queryText.includes("ver_pagos_")) {
-          ci = queryText.replace("ver_pagos_", "");
-        }
-        console.log("nuevoci :>> ", ci);
-        let listaPagos = await pagosLogica.getListaPagos(ci);
+      case "verPagos.action":
+        {
+          console.log("entro a  verPaagosAction :>> ", queryText);
+          console.log("queryText :>> ", queryText);
+          let ci = "";
+          if (queryText.includes("ver_pagos_")) {
+            ci = queryText.replace("ver_pagos_", "");
+          }
+          console.log("nuevoci :>> ", ci);
+          let listaPagos = await pagosLogica.getListaPagos(ci);
 
-        await Promise.all(
-          listaPagos.map(async (element) => {
-            await sendTextMessage(
-              sender,
-              "el concepto de pago es : " +
-                element.concepto +
-                " y el monto pagado es: " +
-                element.monto
-            );
-          })
-        );
-      }
+          await Promise.all(
+            listaPagos.map(async (element) => {
+              await sendTextMessage(
+                sender,
+                "el concepto de pago es : " +
+                  element.concepto +
+                  " y el monto pagado es: " +
+                  element.monto
+              );
+            })
+          );
+        }
+        break;
       case "pagarDeuda.action":
         {
           console.log("queryText :>> ", queryText);
