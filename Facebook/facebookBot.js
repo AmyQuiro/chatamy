@@ -243,7 +243,7 @@ async function handleDialogFlowAction(
         // let celula = parameters.fields.celula.numberValue;
         // let queryText = parameters.fields.queryText.stringValue;
 
-        let menumesa = facebookAction.menuMesa("");
+        let menumesa = facebookAction.menuMesa("aqui va el ci");
         sendGenericMessage(sender, menumesa);
 
       }
