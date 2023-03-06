@@ -27,6 +27,7 @@ const carritoLogica = require("./logica/carritoLogica");
 const clienteLogica = require("./logica/clienteLogica");
 const Cuenta = require("../Models/Cuenta");
 const cuentaLogica = require("./logica/cuentaLogica");
+const Pagos = require("../Models/Pagos");
 
 // ChatbotUser.find({},(err,res)=>{
 //   console.log(res);
@@ -238,6 +239,7 @@ async function handleDialogFlowAction(
             status: body.status,
             // phone: body.phone,
           });
+
           myPago.save((err, pagosDB) => {
             if (err) {
               console.log("err :>> ", err);
