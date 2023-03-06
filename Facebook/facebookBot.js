@@ -276,7 +276,10 @@ async function handleDialogFlowAction(
 
           await cuentaLogica.setDeuda(deuda, ci);
 
-          await sendTextMessage(sender, "La deuda que se pago es :" + deuda);
+          await sendTextMessage(sender, "La deuda actual es :" + deuda);
+
+          let menumesa = facebookAction.menuMesa(ci);
+          sendGenericMessage(sender, menumesa);
         }
         break;
 
