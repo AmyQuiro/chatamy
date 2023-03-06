@@ -254,6 +254,23 @@ async function handleDialogFlowAction(
 
           let deuda = myCuenta.Deudas;
           let monto = deuda - deuda;
+
+          let pagoAGuardar = new Pagos({
+            concepto: "pago completo",
+            monto: deuda,
+            ci: ci,
+            idCuenta: myCuenta._id,
+            status: 1,
+          });
+
+          try {
+            let nuevoCarrito = await pagoAGuardar.save();
+            return nuevoCarrito;
+          } catch (err) {
+            console.log("err :>> ", err);
+            console.info("hubo un error al guardar el carrito");
+            return null;
+          }
           await cuentaLogica.setDeuda(monto, ci);
 
           await sendTextMessage(sender, "La deuda que se pago es :" + deuda);
