@@ -28,6 +28,7 @@ const clienteLogica = require("./logica/clienteLogica");
 const Cuenta = require("../Models/Cuenta");
 const cuentaLogica = require("./logica/cuentaLogica");
 const Pagos = require("../Models/Pagos");
+const pagosLogica = require("./logica/pagosLogica");
 
 // ChatbotUser.find({},(err,res)=>{
 //   console.log(res);
@@ -219,35 +220,32 @@ async function handleDialogFlowAction(
   try {
     console.info("====================================================");
     switch (action) {
+      case "verPagos.action": {
+        console.log("queryText :>> ", queryText);
+        let ci = "";
+        if (queryText.includes("ver_pagos_")) {
+          ci = queryText.replace("ver_pagos_", "");
+        }
+
+        let listaPagos = await pagosLogica.getListaPagos(ci);
+
+        await Promise.all(
+          listaPagos.map(async (element) => {
+            sendTextMessage(sender, "concepto " + element.concepto);
+            sendTextMessage(sender, "monto " + element.monto);
+          })
+        );
+      }
       case "pagarDeuda.action":
         {
           console.log("queryText :>> ", queryText);
           let ci = "";
-          if (queryText.includes("pagar_deuda_")) {
-            ci = queryText.replace("pagar_deuda_", "");
+          if (queryText.includes("ver_pagos_")) {
+            ci = queryText.replace("ver_pagos_", "");
           }
 
-          let deuda = await cuentaLogica.getDeuda(ci);
-          deuda = deuda - deuda;
           let myCuenta = await cuentaLogica.getCuenta(ci);
           await sendTextMessage(sender, "La deuda es :" + deuda);
-
-          let myPago = new Pagos({
-            concepto: "pago realizado",
-            monto: deuda,
-            ci: ci,
-            idCuenta: myCuenta._id,
-            status: "1",
-            // phone: body.phone,
-          });
-
-          myPago.save((err, pagosDB) => {
-            if (err) {
-              console.log("err :>> ", err);
-              return console.info("hubo un error al procesar la compra");
-            }
-            console.log("myPago :>> ", myPago);
-          });
 
           await cuentaLogica.setDeuda(deuda, ci);
 
