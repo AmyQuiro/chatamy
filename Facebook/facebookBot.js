@@ -250,31 +250,31 @@ async function handleDialogFlowAction(
             ci = queryText.replace("pagar_deuda_", "");
           }
 
+          let deuda = await cuentaLogica.getDeuda(ci);
+          deuda = deuda - deuda;
           let myCuenta = await cuentaLogica.getCuenta(ci);
+          await sendTextMessage(sender, "La deuda es :" + deuda);
 
-          let deuda = myCuenta.Deudas;
-          let monto = deuda - deuda;
-
-          let pagoAGuardar = new Pagos({
-            concepto: "pago completo",
+          let myPago = new Pagos({
+            concepto: "pago realizado",
             monto: deuda,
             ci: ci,
             idCuenta: myCuenta._id,
-            status: 1,
+            status: "1",
+            // phone: body.phone,
           });
-          await pagoAGuardar.save((err, pagosDB) => {
+
+          myPago.save((err, pagosDB) => {
             if (err) {
               console.log("err :>> ", err);
-              return console.info("hubo un error al hacer pago");
+              return console.info("hubo un error al procesar la compra");
             }
-            console.log("pago :>> ", pagosDB);
+            console.log("myPago :>> ", myPago);
           });
 
-          await cuentaLogica.setDeuda(monto, ci);
+          await cuentaLogica.setDeuda(deuda, ci);
 
           await sendTextMessage(sender, "La deuda que se pago es :" + deuda);
-
-          await sendTextMessage(sender, "La deuda actual es :" + monto);
         }
         break;
 
