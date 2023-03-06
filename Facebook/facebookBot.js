@@ -315,6 +315,8 @@ async function handleDialogFlowAction(
         handleMessages(messages, sender);
     }
   } catch (error) {
+    console.log("error facebook bot :>> ", error);
+    console.log("error facebook bot error message:>> ", error.message);
     await sendTextMessage(sender, error.message);
   }
 }

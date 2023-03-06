@@ -16,6 +16,7 @@ class cuentaLogica {
         throw new Error("No tiene deudas pendientes");
       }
     } catch (error) {
+      console.log("getDeuda error.message :>> ", error.message);
       throw new Error(error.message);
     }
   }
