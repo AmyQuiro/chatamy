@@ -239,13 +239,15 @@ async function handleDialogFlowAction(
             // phone: body.phone,
           });
           myPago.save((err, pagosDB) => {
-            if (err) return res.json({ ok: false, msg: "Hubo un error" });
-            res.json({
-              ok: true,
-              msg: "Deuda creado correctamente",
-              product: pagosDB,
-            });
+            if (err) {
+              console.log("err :>> ", err);
+              return console.info("hubo un error al procesar la compra");
+            }
+            console.log("myPago :>> ", myPago);
           });
+
+          await cuentaLogica.setDeuda(deuda, ci);
+
           await sendTextMessage(sender, "La deuda que se pago es :" + deuda);
         }
         break;

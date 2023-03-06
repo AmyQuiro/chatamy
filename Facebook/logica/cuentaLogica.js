@@ -3,6 +3,22 @@ const client = require("../../Models/client");
 const ObjectID = require("mongodb").ObjectID;
 
 class cuentaLogica {
+  static async setDeuda(monto, ci) {
+    console.info("Inicio de set monto ");
+    var filterCuenta = { CI: ci };
+
+    const options = { upsert: false };
+
+    const updateDoc = {
+      $set: {
+        Deudas: monto,
+      },
+    };
+
+    const result2 = await Cuenta.updateOne(filterCuenta, updateDoc, options);
+
+    console.log(`${result2.modifiedCount} documento(s)  actualizado(s)`);
+  }
   static async getCuenta(ci) {
     try {
       var myCuenta = await Cuenta.findOne({ CI: ci });
