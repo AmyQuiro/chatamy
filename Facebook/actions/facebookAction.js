@@ -95,7 +95,7 @@ class facebookAction {
     if (ci == null) {
       listaBotones.push(botonVerDeuda);
     } else {
-      botonPagarDeuda.payload = "Pagar deuda de " + ci;
+      botonPagarDeuda.payload = ci;
       botonVerPagos.payload = ci;
     }
     listaBotones.push(botonPagarDeuda);
