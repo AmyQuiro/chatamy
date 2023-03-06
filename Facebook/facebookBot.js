@@ -238,6 +238,7 @@ async function handleDialogFlowAction(
 
       await sendTextMessage(sender, "Que acción desea realizar:");
       let menumesa = facebookAction.menuMesa(celula);
+      sendGenericMessage(sender, menumesa);
       break;
 
     case "menuMesa.action":
