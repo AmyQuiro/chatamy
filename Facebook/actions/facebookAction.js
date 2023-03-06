@@ -90,16 +90,20 @@ class facebookAction {
       title: "ver pagos",
       payload: "ver pagos",
     };
-    let botonPagosEspecificos = {
-      type: "postback",
-      title: "pagos con monto",
-      payload: "pagos con monto",
-    };
+
 
     let listaBotones = [];
     if (ci == null) {
       listaBotones.push(botonVerDeuda);
     } else {
+
+      let botonPagosEspecificos = {
+        type: "postback",
+        title: "pagos con monto",
+        payload: "pagos con monto",
+      };
+
+
       botonPagarDeuda.payload = "pagar_deuda_" + ci;
       botonVerPagos.payload = "ver_pagos_" + ci;
       botonPagosEspecificos = "pagos_especificos_" + ci;
