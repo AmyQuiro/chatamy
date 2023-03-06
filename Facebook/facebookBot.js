@@ -222,7 +222,7 @@ async function handleDialogFlowAction(
         {
           console.log("queryText :>> ", queryText);
           let ci = queryText;
-          let deuda = cuentaLogica.getDeuda(ci);
+          let deuda = await cuentaLogica.getDeuda(ci);
           await sendTextMessage(sender, "la deuda es :" + deuda);
         }
         break;
@@ -231,7 +231,7 @@ async function handleDialogFlowAction(
         {
           let ci = parameters.fields.celula.numberValue;
           console.log("verDeuda ci :>> ", ci);
-          let deuda = cuentaLogica.getDeuda(ci);
+          let deuda = await cuentaLogica.getDeuda(ci);
 
           await sendTextMessage(sender, "Su deuda es de:" + deuda);
 
