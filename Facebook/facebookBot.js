@@ -26,6 +26,7 @@ const facebookAction = require("./actions/facebookAction");
 const carritoLogica = require("./logica/carritoLogica");
 const clienteLogica = require("./logica/clienteLogica");
 const Cuenta = require("../Models/Cuenta");
+const cuentaLogica = require("./logica/cuentaLogica");
 
 // ChatbotUser.find({},(err,res)=>{
 //   console.log(res);
@@ -214,102 +215,107 @@ async function handleDialogFlowAction(
   parameters,
   queryText
 ) {
-  console.info("====================================================");
-  switch (action) {
-    case "verDeuda.action":
+  try {
+    console.info("====================================================");
+    switch (action) {
+      case "pagarDeuda.action":
+        {
+          console.log("queryText :>> ", queryText);
+          let ci = queryText;
+          let deuda = cuentaLogica.getDeuda(ci);
+          await sendTextMessage(sender, "la deuda es :" + deuda);
+        }
+        break;
 
-      let celula = parameters.fields.celula.numberValue;
-      console.log("ci :>> ", celula);
+      case "verDeuda.action":
+        {
+          let ci = parameters.fields.celula.numberValue;
+          console.log("verDeuda ci :>> ", ci);
+          let deuda = cuentaLogica.getDeuda(ci);
 
-      var myCuenta = await Cuenta.findOne({ CI: celula });
-      if (myCuenta == null) {
+          await sendTextMessage(sender, "Su deuda es de:" + deuda);
 
-        await sendTextMessage(sender, "no exite una cuenta con ese numero de ci");
-      }
+          await sendTextMessage(sender, "Que acción desea realizar:");
+          let menumesa = facebookAction.menuMesa(ci);
+          sendGenericMessage(sender, menumesa);
+        }
+        break;
+      case "menuMesa.action":
+        {
+          // let celula = parameters.fields.celula.numberValue;
+          // let queryText = parameters.fields.queryText.stringValue;
 
-      let deuda = myCuenta.Deudas;
-      if (deuda == 0) {
-        await sendTextMessage(sender, "no tienes deudas pendientes");
-      }
+          let menumesa = facebookAction.menuMesa(null);
+          sendGenericMessage(sender, menumesa);
+        }
+        break;
+      case "ci.action":
+        await sendTextMessage(sender, "ci recibido");
+        let ci = parameters.fields.ci.numberValue;
+        console.log("ci :>> ", ci);
+        console.log("parameters :>> ", parameters);
+        clienteLogica.setCi(sender, ci);
 
+        break;
+      case "Prendas.info.action":
+        let listClothesToDisplay = await facebookAction.PrendasAction(
+          parameters
+        );
+        sendGenericMessage(sender, listClothesToDisplay);
 
+        break;
+      case "MenuPrincipal.action":
+        let menu = facebookAction.MenuPrincipal();
+        sendGenericMessage(sender, menu);
 
-      await sendTextMessage(sender, "Su deuda es de:" + deuda);
+        break;
+      case "anadir_a_carrito.action":
+        let data = await facebookAction.anadir_a_carrito(queryText, sender);
 
-      await sendTextMessage(sender, "Que acción desea realizar:");
-      let menumesa = facebookAction.menuMesa(celula);
-      sendGenericMessage(sender, menumesa);
-      break;
+        if (data == null) {
+          await sendTextMessage(
+            sender,
+            "Hubo un error al añadir el producto al carrito"
+          );
+        }
 
-    case "menuMesa.action":
-      {
-        // let celula = parameters.fields.celula.numberValue;
-        // let queryText = parameters.fields.queryText.stringValue;
-
-        let menumesa = facebookAction.menuMesa(null);
-        sendGenericMessage(sender, menumesa);
-
-      }
-      break;
-    case "ci.action":
-      await sendTextMessage(sender, "ci recibido");
-      let ci = parameters.fields.ci.numberValue;
-      console.log("ci :>> ", ci);
-      console.log("parameters :>> ", parameters);
-      clienteLogica.setCi(sender, ci);
-
-      break;
-    case "Prendas.info.action":
-      let listClothesToDisplay = await facebookAction.PrendasAction(parameters);
-      sendGenericMessage(sender, listClothesToDisplay);
-
-      break;
-    case "MenuPrincipal.action":
-      let menu = facebookAction.MenuPrincipal();
-      sendGenericMessage(sender, menu);
-
-      break;
-    case "anadir_a_carrito.action":
-      let data = await facebookAction.anadir_a_carrito(queryText, sender);
-
-      if (data == null) {
         await sendTextMessage(
           sender,
-          "Hubo un error al añadir el producto al carrito"
-        );
-      }
-
-      await sendTextMessage(
-        sender,
-        "Se agregó al carrito : " + data.myProduct.name
-      );
-
-      await sendTextMessage(sender, "Te muestro tu carrito ");
-
-      console.log("antes de  data.carritoCliente :>> ", data.carritoCliente);
-
-      let listDetalleCarritoDisplay =
-        await carritoLogica.getDetalleCarritoToDisplay(
-          data.carritoCliente,
-          sender
+          "Se agregó al carrito : " + data.myProduct.name
         );
 
-      console.log("listDetalleCarritoDisplay :>> ", listDetalleCarritoDisplay);
+        await sendTextMessage(sender, "Te muestro tu carrito ");
 
-      sendGenericMessage(sender, listDetalleCarritoDisplay);
+        console.log("antes de  data.carritoCliente :>> ", data.carritoCliente);
 
-      break;
-    case "FinalizarCompra.action":
-      await facebookAction.finalizarCompra(sender);
+        let listDetalleCarritoDisplay =
+          await carritoLogica.getDetalleCarritoToDisplay(
+            data.carritoCliente,
+            sender
+          );
 
-      await sendTextMessage(sender, "Compra finalizada con exito");
+        console.log(
+          "listDetalleCarritoDisplay :>> ",
+          listDetalleCarritoDisplay
+        );
 
-      break;
+        sendGenericMessage(sender, listDetalleCarritoDisplay);
 
-    default:
-      console.info("entro a default action");
+        break;
+      case "FinalizarCompra.action":
+        await facebookAction.finalizarCompra(sender);
 
-      handleMessages(messages, sender);
+        await sendTextMessage(sender, "Compra finalizada con exito");
+
+        break;
+
+      default:
+        console.info("entro a default action");
+
+        handleMessages(messages, sender);
+    }
+  } catch (error) {
+    await sendTextMessage(sender, error.message);
   }
 }
 
