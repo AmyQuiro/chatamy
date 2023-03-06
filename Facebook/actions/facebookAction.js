@@ -97,10 +97,10 @@ class facebookAction {
       listaBotones.push(botonVerDeuda);
     } else {
 
-      let botonVerPagos = {
+      let botonPagosEspecificos = {
         type: "postback",
-        title: "ver pagos",
-        payload: "ver pagos",
+        title: "pagos por monto",
+        payload: "pagos monto",
       };
 
 
