@@ -236,7 +236,7 @@ async function handleDialogFlowAction(
             monto: deuda,
             ci: ci,
             idCuenta: myCuenta._id,
-            status: body.status,
+            status: "1",
             // phone: body.phone,
           });
 
