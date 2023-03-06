@@ -226,7 +226,7 @@ async function handleDialogFlowAction(
         if (queryText.includes("ver_pagos_")) {
           ci = queryText.replace("ver_pagos_", "");
         }
-
+        console.log("nuevoci :>> ", ci);
         let listaPagos = await pagosLogica.getListaPagos(ci);
 
         await Promise.all(
