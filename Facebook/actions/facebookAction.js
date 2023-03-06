@@ -82,7 +82,7 @@ class facebookAction {
 
     let botonPagarDeuda = {
       type: "postback",
-      title: "pagar",
+      title: "pagar deuda " + ci,
       payload: "pagar deuda",
     };
     let botonVerPagos = {
