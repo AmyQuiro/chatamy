@@ -204,31 +204,35 @@ async function handleDialogFlowAction(
   console.info("====================================================");
   switch (action) {
     case "verDeuda.action":
+      {
 
-      let celula = parameters.fields.celula.numberValue;
-      console.log("ci :>> ", celula);
+        let celula = parameters.fields.celula.numberValue;
+        console.log("ci :>> ", celula);
 
-      var myCuenta = await Cuenta.findOne({ CI: celula });
-      if (myCuenta == null) {
+        var myCuenta = await Cuenta.findOne({ CI: celula });
+        if (myCuenta == null) {
+          await sendTextMessage(sender, "no exite una cuenta con ese numero de ci");
+        }
 
-        await sendTextMessage(sender, "no exite una cuenta con ese numero de ci");
+        let deuda = myCuenta.Deudas;
+        if (deuda == 0) {
+          await sendTextMessage(sender, "no tienes deudas pendientes");
+        }
+
+        await sendTextMessage(sender, "la deuda a pagar es:" + deuda);
       }
-
-      let deuda = myCuenta.Deudas;
-      if (deuda == 0) {
-        await sendTextMessage(sender, "no tienes deudas pendientes");
-      }
-
-
-
-      await sendTextMessage(sender, "la deuda a padar es:" + deuda);
 
       break;
 
     case "menuMesa.action":
-      let menumesa = facebookAction.menuMesa();
-      sendGenericMessage(sender, menumesa);
+      {
+        // let celula = parameters.fields.celula.numberValue;
+        // let queryText = parameters.fields.queryText.stringValue;
 
+        let menumesa = facebookAction.menuMesa("");
+        sendGenericMessage(sender, menumesa);
+
+      }
       break;
     case "ci.action":
       await sendTextMessage(sender, "ci recibido");

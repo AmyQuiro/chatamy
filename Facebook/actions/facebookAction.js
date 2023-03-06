@@ -75,29 +75,29 @@ class facebookAction {
     ];
   }
 
-  static menuMesa() {
+  static menuMesa(ci) {
     return [
       {
         title: "Menu ",
         image_url:
-          "https://www.esdesignbarcelona.com/sites/default/files/imagenes/haz-crecer-tu-marca-de-ropa-frente-la-competencia_1.jpg",
-        subtitle: "Prendas de mujeres",
+          "https://previews.123rf.com/images/ylivdesign/ylivdesign1612/ylivdesign161202203/66987914-dinero-en-efectivo-en-icono-de-la-mano-ilustraci%C3%B3n-de-dibujos-animados-de-dinero-en-efectivo-en-el.jpg",
+        subtitle: "que desea hacer?",
 
         buttons: [
           {
             type: "postback",
             title: "ver deuda",
-            payload: "ver deuda",
+            payload: "ver deuda"
           },
           {
             type: "postback",
             title: "pagar deuda",
-            payload: "pagar deuda",
+            payload: ci,
           },
           {
             type: "postback",
             title: "ver pagos",
-            payload: "ver pagos",
+            payload: ci,
           },
         ],
       },
