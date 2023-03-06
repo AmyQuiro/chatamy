@@ -221,7 +221,11 @@ async function handleDialogFlowAction(
       case "pagarDeuda.action":
         {
           console.log("queryText :>> ", queryText);
-          let ci = queryText;
+          let ci = "";
+          if (queryText.includes("pagar_deuda_")) {
+            ci = queryText.replace("pagar_deuda_", "");
+          }
+
           let deuda = await cuentaLogica.getDeuda(ci);
           await sendTextMessage(sender, "la deuda es :" + deuda);
         }
