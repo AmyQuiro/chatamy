@@ -221,6 +221,7 @@ async function handleDialogFlowAction(
     console.info("====================================================");
     switch (action) {
       case "verPagos.action": {
+        console.log("entro a  verPaagosAction :>> ", queryText);
         console.log("queryText :>> ", queryText);
         let ci = "";
         if (queryText.includes("ver_pagos_")) {
