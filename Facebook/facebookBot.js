@@ -228,6 +228,7 @@ async function handleDialogFlowAction(
           }
 
           let deuda = await cuentaLogica.getDeuda(ci);
+          deuda = deuda - deuda;
           let myCuenta = await cuentaLogica.getCuenta(ci);
           await sendTextMessage(sender, "La deuda es :" + deuda);
 
