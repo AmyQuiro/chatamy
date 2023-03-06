@@ -232,8 +232,10 @@ async function handleDialogFlowAction(
 
         await Promise.all(
           listaPagos.map(async (element) => {
-            await sendTextMessage(sender, "concepto " + element.concepto);
-            await sendTextMessage(sender, "monto " + element.monto);
+            await sendTextMessage(
+              sender,
+              "concepto " + element.concepto + " y el monto es:" + element.monto
+            );
           })
         );
       }
