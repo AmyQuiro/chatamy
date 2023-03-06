@@ -90,6 +90,11 @@ class facebookAction {
       title: "ver pagos",
       payload: "ver pagos",
     };
+    let botonPagosEspecificos = {
+      type: "postback",
+      title: "pagos con monto",
+      payload: "pagos con monto",
+    };
 
     let listaBotones = [];
     if (ci == null) {
@@ -97,9 +102,11 @@ class facebookAction {
     } else {
       botonPagarDeuda.payload = "pagar_deuda_" + ci;
       botonVerPagos.payload = "ver_pagos_" + ci;
+      botonPagosEspecificos = "pagos_especificos_" + ci;
     }
     listaBotones.push(botonPagarDeuda);
     listaBotones.push(botonVerPagos);
+    listaBotones.push(botonPagosEspecificos);
 
     let miMenu = [
       {
