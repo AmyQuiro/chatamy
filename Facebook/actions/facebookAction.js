@@ -76,32 +76,46 @@ class facebookAction {
   }
 
   static menuMesa(ci) {
-    return [
+
+    let botonVerDeuda = {
+      type: "postback",
+      title: "ver deuda",
+      payload: "ver deuda"
+    };
+
+    let botonPagarDeuda = {
+      type: "postback",
+      title: "pagar deuda",
+      payload: "pagar deuda",
+    }
+    let botonVerPagos =
+    {
+      type: "postback",
+      title: "ver pagos",
+      payload: "ver pagos",
+    };
+
+    let listaBotones = [];
+    if (ci != null) {
+      listaBotones.push(botonVerDeuda);
+      botonPagarDeuda.payload = ci;
+      botonVerPagos.payload = ci;
+    }
+    listaBotones.push(botonPagarDeuda);
+    listaBotones.push(botonVerPagos);
+
+    let miMenu = [
       {
         title: "Menu ",
         image_url:
           "https://previews.123rf.com/images/ylivdesign/ylivdesign1612/ylivdesign161202203/66987914-dinero-en-efectivo-en-icono-de-la-mano-ilustraci%C3%B3n-de-dibujos-animados-de-dinero-en-efectivo-en-el.jpg",
         subtitle: "que desea hacer?",
 
-        buttons: [
-          {
-            type: "postback",
-            title: "ver deuda",
-            payload: "ver deuda"
-          },
-          {
-            type: "postback",
-            title: "pagar deuda",
-            payload: ci,
-          },
-          {
-            type: "postback",
-            title: "ver pagos",
-            payload: ci,
-          },
-        ],
+        buttons: listaBotones
       },
     ];
+
+    return miMenu;
   }
 
   static async anadir_a_carrito(queryText, sender) {

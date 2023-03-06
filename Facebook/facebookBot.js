@@ -234,8 +234,10 @@ async function handleDialogFlowAction(
 
 
 
-      await sendTextMessage(sender, "la deuda a padar es:" + deuda);
+      await sendTextMessage(sender, "Su deuda es de:" + deuda);
 
+      await sendTextMessage(sender, "Que acción desea realizar:");
+      let menumesa = facebookAction.menuMesa(celula);
       break;
 
     case "menuMesa.action":
@@ -243,7 +245,7 @@ async function handleDialogFlowAction(
         // let celula = parameters.fields.celula.numberValue;
         // let queryText = parameters.fields.queryText.stringValue;
 
-        let menumesa = facebookAction.menuMesa("aqui va el ci");
+        let menumesa = facebookAction.menuMesa(null);
         sendGenericMessage(sender, menumesa);
 
       }
