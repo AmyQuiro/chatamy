@@ -22,7 +22,35 @@ router.post("", (req, res) => {
     });
   });
 });
+/********* */
 
+router.get("/listaPromo", async (req, res) => {
+  console.info("lista promocion");
+  var mongoose = require("mongoose");
+
+  // let idPromocion = req.params.id;
+  const date = new Date();
+  const options = {
+    timeZone: "America/La_Paz",
+    weekday: "long",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    // hour: "2-digit",
+    // minute: "2-digit",
+  };
+  const boliviaDate = date.toLocaleString("es-BO", options);
+  console.log(boliviaDate);
+  // console.info(idPromocion);
+
+  let promocion = await Promocion.find({
+    fecha: date,
+  });
+  console.info("mi promocion");
+
+  res.json(promocion);
+});
+/***** */
 router.get("/getPromocion/:id", async (req, res) => {
   console.info("get promocion");
   var mongoose = require("mongoose");
