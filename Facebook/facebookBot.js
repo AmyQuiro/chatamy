@@ -29,6 +29,7 @@ const Cuenta = require("../Models/Cuenta");
 const cuentaLogica = require("./logica/cuentaLogica");
 const Pagos = require("../Models/Pagos");
 const pagosLogica = require("./logica/pagosLogica");
+const promocionLogica = require("./logica/promocionLogica");
 
 // ChatbotUser.find({},(err,res)=>{
 //   console.log(res);
@@ -106,14 +107,41 @@ router.post("/webhook/", function (req, res) {
 });
 
 //Enviar mensaje a facebook
-router.get("/enviarMsgFacebook", async (req, res) => {
-  console.log("res json :>> ", JSON.stringify(req.body));
-  let listFacebookIds = req.body.facebookId;
-  let mensaje = req.body.mensaje;
+router.get("/enviarMsgFacebook/:id", async (req, res) => {
+  let idPromocion = req.params.id;
+  console.log("idPromocion :>> ", idPromocion);
+  let myPromocion = await promocionLogica.getPromocionById(idPromocion);
+  console.log("myPromocion :>> ", myPromocion);
 
-  for (const facebookIdCliente of listFacebookIds) {
-    await sendTextMessage(facebookIdCliente, mensaje);
-  }
+  let clientes = await clienteLogica.getclientesPorGrupo(myPromocion.grupo);
+
+  console.log("clients :>> ", clientes);
+
+  await Promise.all(
+    clientes.map(async (myCliente) => {
+      try {
+        await sendTextMessage(
+          myCliente.facebookId,
+          "Hola " +
+            myCliente.firstName +
+            " tenemos esta promoción que no podes perderte."
+        );
+
+        await sendTextMessage(
+          myCliente.facebookId,
+          myPromocion.Name + " - " + myPromocion.message
+        );
+      } catch (error) {
+        console.log("error :>> ", error);
+      }
+    })
+  );
+  // let listFacebookIds = req.body.facebookId;
+  // let mensaje = req.body.mensaje;
+
+  // for (const facebookIdCliente of listFacebookIds) {
+  //   await sendTextMessage(facebookIdCliente, mensaje);
+  // }
 
   res.sendStatus(200, "Datos enviados.");
 });

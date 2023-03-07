@@ -8,6 +8,12 @@ class clienteLogica {
     return myCliente;
   }
 
+  static async getclientesPorGrupo(grupo) {
+    var clientes = await client.find({ status: grupo });
+    console.log("clientes :>> ", clientes);
+    return clientes;
+  }
+
   static async setStatus(idcliente, dbListCompras) {
     console.info("Inicio de set status cliente");
     let filterClient = { _id: ObjectID(idcliente) };
