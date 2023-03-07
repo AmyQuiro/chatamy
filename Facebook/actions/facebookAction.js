@@ -82,7 +82,7 @@ class facebookAction {
 
     let botonPagarDeuda = {
       type: "postback",
-      title: "pagar deuda " + ci,
+      title: "pagar deuda ",
       payload: "pagar deuda",
     };
     let botonVerPagos = {
@@ -91,15 +91,28 @@ class facebookAction {
       payload: "ver pagos",
     };
 
+    let botonPagosEspecificos = {
+      type: "postback",
+      title: "pagos por monto",
+      payload: "pagos monto",
+    };
+
+
     let listaBotones = [];
     if (ci == null) {
       listaBotones.push(botonVerDeuda);
     } else {
+
+      botonPagarDeuda.title = "pagar deuda " + ci;
       botonPagarDeuda.payload = "pagar_deuda_" + ci;
       botonVerPagos.payload = "ver_pagos_" + ci;
+      botonPagosEspecificos = "pagos_especificos_" + ci;
+
+      listaBotones.push(botonPagosEspecificos);
     }
     listaBotones.push(botonPagarDeuda);
     listaBotones.push(botonVerPagos);
+
 
     let miMenu = [
       {

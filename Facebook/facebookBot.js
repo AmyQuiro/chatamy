@@ -248,6 +248,12 @@ async function handleDialogFlowAction(
   try {
     console.info("====================================================");
     switch (action) {
+      case "pagoEspecifico.action": {
+        await sendTextMessage(sender, "escribanos el monto a pagar");
+        let monto = parameters.fields.monto.numberValue;
+        console.log("monto :>> ", monto);
+        break;
+      }
       case "verPagos.action":
         {
           console.log("entro a  verPaagosAction :>> ", queryText);
@@ -264,9 +270,9 @@ async function handleDialogFlowAction(
               await sendTextMessage(
                 sender,
                 "el concepto de pago es : " +
-                  element.concepto +
-                  " y el monto pagado es: " +
-                  element.monto
+                element.concepto +
+                " y el monto pagado es: " +
+                element.monto
               );
             })
           );
