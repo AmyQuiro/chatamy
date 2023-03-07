@@ -11,6 +11,7 @@ router.post("", (req, res) => {
     grupo: body.grupo,
     message: body.message,
     status: body.status,
+    fecha: body.fecha,
   });
   promocion.save((err, promocionDB) => {
     if (err) return res.json({ ok: false, msg: "Hubo un error" });
