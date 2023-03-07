@@ -110,6 +110,7 @@ class facebookAction {
 
       listaBotones.push(botonPagosEspecificos);
     }
+
     listaBotones.push(botonPagarDeuda);
     listaBotones.push(botonVerPagos);
 
