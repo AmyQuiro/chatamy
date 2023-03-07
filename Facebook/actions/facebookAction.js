@@ -97,16 +97,14 @@ class facebookAction {
       payload: "pagos monto",
     };
 
-
     let listaBotones = [];
     if (ci == null) {
       listaBotones.push(botonVerDeuda);
     } else {
-
       botonPagarDeuda.title = "pagar deuda " + ci;
       botonPagarDeuda.payload = "pagar_deuda_" + ci;
       botonVerPagos.payload = "ver_pagos_" + ci;
-      botonPagosEspecificos = "pagos_especificos_" + ci;
+      botonPagosEspecificos.payload = "pagos_especificos_" + ci;
 
       listaBotones.push(botonPagosEspecificos);
     }
@@ -114,7 +112,7 @@ class facebookAction {
     listaBotones.push(botonPagarDeuda);
     listaBotones.push(botonVerPagos);
 
-
+    console.log("listaBotones :>> ", listaBotones);
     let miMenu = [
       {
         title: "Menu ",
