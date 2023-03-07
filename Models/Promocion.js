@@ -8,7 +8,7 @@ const PromocionSchema = new Schema(
     grupo: Number,
     message: String,
     status: Number, //1: creoado : 2= enviado 3= error
-    fecha: String,
+    fecha: String, // el formato tiene que ser dia/mes/añoss
   },
   { timestamps: true }
 );
